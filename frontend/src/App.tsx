@@ -30,6 +30,8 @@ const LoadingAlert = () => (
   </Alert >
 );
 
+
+
 const ImageUploadPage = () => {
   const [selectedFile, setFile] = useState<File | null>(null);
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
