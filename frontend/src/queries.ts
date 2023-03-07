@@ -14,16 +14,80 @@
  * limitations under the License.
  */
 
-import axios from 'axios';
+import axios from "axios";
 
 const client = axios.create({ baseURL: import.meta.env.API_SERVER });
 
-export interface ImageUploadResult {
-    imageUrl: string;
+export type ClassificationResult = {
+  [key: string]: number;
+};
+
+export interface ObjectDetection {
+  label: string;
+  confidence: number;
+  boundingBox: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  };
 }
 
+export interface ObjectDetectionResult {
+  objectDetections: ObjectDetection[];
+}
+
+export interface SegmentationLayer {
+  label: string;
+  confidence: number;
+  mask: number[][];
+}
+export interface SegmentationResult {
+  segmentationLayers: SegmentationLayer[];
+}
+
+export interface ImageUploadResult {
+  imageUrl: string;
+  classificationResult?: ClassificationResult;
+  segmentationResult?: SegmentationResult;
+  objectDetectionResult?: ObjectDetectionResult;
+}
+
+const objectDetectionResult: ObjectDetectionResult = {
+  objectDetections: [
+    {
+      label: "person",
+      confidence: 0.92,
+      boundingBox: {
+        x: 100,
+        y: 200,
+        width: 50,
+        height: 100,
+      },
+    },
+    {
+      label: "dog",
+      confidence: 0.85,
+      boundingBox: {
+        x: 300,
+        y: 150,
+        width: 70,
+        height: 70,
+      },
+    },
+  ],
+};
+
 export async function uploadImage(file: File): Promise<ImageUploadResult> {
-    const formData = new FormData();
-    formData.append("image", file);
-    return client.post<ImageUploadResult>("/upload-image", formData).then((response) => response.data);
+  // const formData = new FormData();
+  // formData.append("image", file);
+  // return client
+  //   .post<ImageUploadResult>("/upload-image", formData)
+  //   .then((response) => response.data);
+
+  return Promise.resolve({
+    imageUrl: "http://placekitten.com/600/600",
+    classificationResult: { burger: 0.2, cat: 0.7, "hot dog": 0.1 },
+    objectDetectionResult: objectDetectionResult,
+  });
 }

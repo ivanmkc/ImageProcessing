@@ -6,31 +6,61 @@ import {
   Button,
   CircularProgress,
   Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   TextField,
   Typography,
 } from "@mui/material";
-import { uploadImage, ImageUploadResult } from "./queries";
+import { uploadImage, ImageUploadResult } from "queries";
 import { Stack } from "@mui/system";
+import ClassificationResultView from "components/ClassificationResultsView";
 
-const ErrorAlert = ({ error }: { error: Error }) => (
-  <Alert severity="error">
-    Error: {error.message}
+const ObjectDetectionResult = () => (
+  <Alert severity="success">
+    <Typography variant="body1" sx={{ ml: 2 }}>
+      Image is classified as a "cat" with 94% confidence.
+    </Typography>
   </Alert>
 );
 
-const ResultContainer = ({ imageUrl }: { imageUrl: string }) => (
-  <img src={imageUrl} alt="Uploaded Image" style={{ maxWidth: "100%", marginTop: 16 }} />
+const SegmentationResult = () => (
+  <Alert severity="success">
+    <Typography variant="body1" sx={{ ml: 2 }}>
+      Image is classified as a "cat" with 94% confidence.
+    </Typography>
+  </Alert>
+);
+
+const ErrorAlert = ({ error }: { error: Error }) => (
+  <Alert severity="error">Error: {error.message}</Alert>
+);
+
+const ResultContainer = ({ result }: { result: ImageUploadResult }) => (
+  <Box>
+    <Paper variant="outlined">
+      <img src={result.imageUrl} alt="Uploaded Image" />
+    </Paper>
+    {result.classificationResult != null ? (
+      <ClassificationResultView
+        classificationResult={result.classificationResult}
+      />
+    ) : null}
+    {result.segmentationResult != null ? <SegmentationResult /> : null}
+    {result.objectDetectionResult != null ? <ObjectDetectionResult /> : null}
+  </Box>
 );
 
 const LoadingAlert = () => (
-  <Alert severity="info" icon={<CircularProgress size={24} />} >
+  <Alert severity="info" icon={<CircularProgress size={24} />}>
     <Typography variant="body1" sx={{ ml: 2 }}>
       Uploading image...
     </Typography>
-  </Alert >
+  </Alert>
 );
-
-
 
 const ImageUploadPage = () => {
   const [selectedFile, setFile] = useState<File | null>(null);
@@ -49,12 +79,12 @@ const ImageUploadPage = () => {
     refetch,
     data: uploadResult,
   } = useQuery<ImageUploadResult, Error>(
-    ['uploadFile', selectedFile],
+    ["uploadFile", selectedFile],
     () => {
       if (selectedFile != null) {
         return uploadImage(selectedFile);
       } else {
-        throw new Error('No file selected for upload');
+        throw new Error("No file selected for upload");
       }
     },
     {
@@ -63,22 +93,38 @@ const ImageUploadPage = () => {
   );
 
   return (
-    <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+      }}
+    >
       <Paper sx={{ p: 2 }}>
         <Typography variant="h5" sx={{ mb: 2 }}>
           Upload Image
         </Typography>
         <Stack spacing={2}>
           <TextField type="file" onChange={handleFileChange} />
-          <Button variant="contained" onClick={() => { refetch() }} disabled={!selectedFile || isLoading}>
+          <Button
+            variant="contained"
+            onClick={() => {
+              refetch();
+            }}
+            disabled={!selectedFile || isLoading}
+          >
             Upload
           </Button>
-          {selectedFile ?
+          {selectedFile ? (
             <>
               {error && <ErrorAlert error={error} />}
               {isLoading && <LoadingAlert />}
-              {uploadResult != null && <ResultContainer imageUrl={uploadResult.imageUrl} />}
-            </> : null}
+              {uploadResult != null && (
+                <ResultContainer result={uploadResult} />
+              )}
+            </>
+          ) : null}
         </Stack>
       </Paper>
     </Box>
@@ -92,5 +138,5 @@ export default () => {
     <QueryClientProvider client={queryClient}>
       <ImageUploadPage />
     </QueryClientProvider>
-  )
-}
+  );
+};
