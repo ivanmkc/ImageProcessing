@@ -4,15 +4,14 @@ import {
   TableContainer,
   Paper,
   Table,
-  TableHead,
   TableRow,
   TableBody,
   Typography,
   Alert,
 } from "@mui/material";
-import { ClassificationResult } from "queries";
+import { ObjectDetectionResult } from "queries";
 
-const ClassificationRow = ({
+const LabelRow = ({
   label,
   confidence,
 }: {
@@ -37,39 +36,43 @@ const ClassificationRow = ({
 };
 
 export default ({
-  classificationResult,
+  result,
+  showTopResult,
 }: {
-  classificationResult: ClassificationResult;
+  result: ObjectDetectionResult;
+  showTopResult: boolean;
 }) => {
   // Sort rows by confidence
-  const rows = Object.entries(classificationResult)
-    .map(([key, value]) => ({ key, value }))
-    .sort((a, b) => b.value - a.value);
+  const objectDetections = result.objectDetections.sort((a, b) =>
+    a.confidence > b.confidence ? 1 : -1
+  );
 
   // Get highest confidence label and percentage
-  const highestConfidence = rows[0];
-  const label = highestConfidence.key;
-  const confidencePercentage = (highestConfidence.value * 100).toFixed(0);
+  const highestConfidence = objectDetections[0];
+  const label = highestConfidence.label;
+  const confidencePercentage = (highestConfidence.confidence * 100).toFixed(0);
 
   return (
     <>
       <TableContainer component={Paper}>
         <Table>
           <TableBody>
-            {rows.map(({ key, value }) => (
-              <TableRow key={key}>
-                <ClassificationRow label={key} confidence={value} />
+            {objectDetections.map(({ label, confidence }) => (
+              <TableRow key={label}>
+                <LabelRow label={label} confidence={confidence} />
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-      <Alert severity="success">
-        <Typography variant="body1" sx={{ ml: 2 }}>
-          Image is classified as '{label}' with {confidencePercentage}%
-          confidence.
-        </Typography>
-      </Alert>
+      {showTopResult ? (
+        <Alert severity="success">
+          <Typography variant="body1" sx={{ ml: 2 }}>
+            Image is classified as '{label}' with {confidencePercentage}%
+            confidence.
+          </Typography>
+        </Alert>
+      ) : null}
     </>
   );
 };

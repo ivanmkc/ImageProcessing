@@ -18,7 +18,7 @@ import axios from "axios";
 
 const client = axios.create({ baseURL: import.meta.env.API_SERVER });
 
-export type ClassificationResult = {
+export type LabelDetectionResult = {
   [key: string]: number;
 };
 
@@ -48,15 +48,14 @@ export interface SegmentationResult {
 
 export interface ImageUploadResult {
   imageUrl: string;
-  classificationResult?: ClassificationResult;
-  segmentationResult?: SegmentationResult;
   objectDetectionResult?: ObjectDetectionResult;
+  labelDetectionResult?: LabelDetectionResult;
 }
 
 const objectDetectionResult: ObjectDetectionResult = {
   objectDetections: [
     {
-      label: "person",
+      label: "cat",
       confidence: 0.92,
       boundingBox: {
         x: 100,
@@ -87,7 +86,7 @@ export async function uploadImage(file: File): Promise<ImageUploadResult> {
 
   return Promise.resolve({
     imageUrl: "http://placekitten.com/600/600",
-    classificationResult: { burger: 0.2, cat: 0.7, "hot dog": 0.1 },
     objectDetectionResult: objectDetectionResult,
+    labelDetectionResult: { burger: 0.2, cat: 0.7, "hot dog": 0.1 },
   });
 }

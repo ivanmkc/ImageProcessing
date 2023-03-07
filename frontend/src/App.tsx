@@ -7,19 +7,14 @@ import {
   CircularProgress,
   Paper,
   Tab,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Tabs,
   TextField,
   Typography,
 } from "@mui/material";
 import { uploadImage, ImageUploadResult } from "queries";
 import { Stack } from "@mui/system";
-import ClassificationResultView from "components/ClassificationResultsView";
+import LabelDetectionResultView from "components/LabelDetectionResultView";
+import ObjectDetectionResultView from "components/ObjectDetectionResultView";
 
 const ObjectDetectionResult = () => (
   <Alert severity="success">
@@ -77,14 +72,20 @@ const ResultContainer = ({ result }: { result: ImageUploadResult }) => {
           <Tab label="Safe Search" />
         </Tabs>
         <TabPanel value={value} index={0}>
-          {result.classificationResult != null ? (
-            <ClassificationResultView
-              classificationResult={result.classificationResult}
+          {result.objectDetectionResult != null ? (
+            <ObjectDetectionResultView
+              result={result.objectDetectionResult}
+              showTopResult={true}
             />
           ) : null}
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <Typography>TODO: Labels</Typography>
+          {result.labelDetectionResult != null ? (
+            <LabelDetectionResultView
+              result={result.labelDetectionResult}
+              showTopResult={false}
+            />
+          ) : null}
         </TabPanel>
         <TabPanel value={value} index={2}>
           <Typography>TODO: Properties</Typography>
