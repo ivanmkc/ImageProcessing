@@ -15,6 +15,7 @@ import { uploadImage, ImageUploadResult } from "queries";
 import { Stack } from "@mui/system";
 import LabelDetectionResultView from "components/LabelDetectionResultView";
 import ObjectDetectionResultView from "components/ObjectDetectionResultView";
+import ImageWithBoundingBoxes from "components/ImageWithBoundingBoxes";
 
 const ObjectDetectionResult = () => (
   <Alert severity="success">
@@ -62,7 +63,11 @@ const ResultContainer = ({ result }: { result: ImageUploadResult }) => {
   return (
     <Box>
       <Paper variant="outlined">
-        <img src={result.imageUrl} alt="Uploaded Image" />
+        {/* <img src={result.imageUrl} alt="Uploaded Image" /> */}
+        <ImageWithBoundingBoxes
+          objectDetectionResult={result.objectDetectionResult}
+          imageUrl={result.imageUrl}
+        />
       </Paper>
       <div>
         <Tabs value={value} onChange={handleChange}>
