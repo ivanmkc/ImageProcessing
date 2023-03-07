@@ -6,12 +6,14 @@ import {
   Button,
   CircularProgress,
   Paper,
+  Tab,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  Tabs,
   TextField,
   Typography,
 } from "@mui/material";
@@ -39,20 +41,61 @@ const ErrorAlert = ({ error }: { error: Error }) => (
   <Alert severity="error">Error: {error.message}</Alert>
 );
 
-const ResultContainer = ({ result }: { result: ImageUploadResult }) => (
-  <Box>
-    <Paper variant="outlined">
-      <img src={result.imageUrl} alt="Uploaded Image" />
-    </Paper>
-    {result.classificationResult != null ? (
-      <ClassificationResultView
-        classificationResult={result.classificationResult}
-      />
-    ) : null}
-    {result.segmentationResult != null ? <SegmentationResult /> : null}
-    {result.objectDetectionResult != null ? <ObjectDetectionResult /> : null}
-  </Box>
-);
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+const TabPanel = (props: TabPanelProps) => {
+  const { children, value, index } = props;
+
+  return (
+    <div hidden={value !== index}>
+      {value === index && <div>{children}</div>}
+    </div>
+  );
+};
+
+const ResultContainer = ({ result }: { result: ImageUploadResult }) => {
+  const [value, setValue] = useState(0);
+
+  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+    setValue(newValue);
+  };
+
+  return (
+    <Box>
+      <Paper variant="outlined">
+        <img src={result.imageUrl} alt="Uploaded Image" />
+      </Paper>
+      <div>
+        <Tabs value={value} onChange={handleChange}>
+          <Tab label="Objects" />
+          <Tab label="Labels" />
+          <Tab label="Properties" />
+          <Tab label="Safe Search" />
+        </Tabs>
+        <TabPanel value={value} index={0}>
+          {result.classificationResult != null ? (
+            <ClassificationResultView
+              classificationResult={result.classificationResult}
+            />
+          ) : null}
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <Typography>TODO: Labels</Typography>
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <Typography>TODO: Properties</Typography>
+        </TabPanel>
+        <TabPanel value={value} index={3}>
+          <Typography>TODO: Safe Search</Typography>
+        </TabPanel>
+      </div>
+    </Box>
+  );
+};
 
 const LoadingAlert = () => (
   <Alert severity="info" icon={<CircularProgress size={24} />}>
