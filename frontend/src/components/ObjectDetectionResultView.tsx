@@ -44,7 +44,7 @@ export default ({
 }) => {
   // Sort rows by confidence
   const objectDetections = result.objectDetections.sort((a, b) =>
-    a.confidence > b.confidence ? 1 : -1
+    a.confidence < b.confidence ? 1 : -1
   );
 
   // Get highest confidence label and percentage
@@ -54,6 +54,14 @@ export default ({
 
   return (
     <>
+      {showTopResult ? (
+        <Alert severity="success">
+          <Typography variant="body1" sx={{ ml: 2 }}>
+            Image is classified as '{label}' with {confidencePercentage}%
+            confidence.
+          </Typography>
+        </Alert>
+      ) : null}
       <TableContainer component={Paper}>
         <Table>
           <TableBody>
@@ -65,14 +73,6 @@ export default ({
           </TableBody>
         </Table>
       </TableContainer>
-      {showTopResult ? (
-        <Alert severity="success">
-          <Typography variant="body1" sx={{ ml: 2 }}>
-            Image is classified as '{label}' with {confidencePercentage}%
-            confidence.
-          </Typography>
-        </Alert>
-      ) : null}
     </>
   );
 };

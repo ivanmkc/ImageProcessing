@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ObjectDetectionResult, ObjectDetection } from "queries";
 import { Box } from "@mui/material";
 
@@ -9,23 +9,41 @@ const ImageWithBoundingBoxes = ({
   imageUrl: string;
   objectDetectionResult?: ObjectDetectionResult;
 }) => {
+  const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
+
+  useEffect(() => {
+    const image = new Image();
+    image.onload = () => {
+      setImageSize({ width: image.width, height: image.height });
+    };
+    image.src = imageUrl;
+  }, [imageUrl]);
+
   const boundingBoxes = objectDetectionResult?.objectDetections.map(
     (detection: ObjectDetection) => detection.boundingBox
   );
 
-  const boundingBoxElements = boundingBoxes?.map((box, index) => (
-    <Box
-      key={index}
-      sx={{
-        position: "absolute",
-        top: `${box.y}px`,
-        left: `${box.x}px`,
-        width: `${box.width}px`,
-        height: `${box.height}px`,
-        border: "3px solid red",
-      }}
-    />
-  ));
+  const boundingBoxElements = boundingBoxes?.map((box, index) => {
+    const { width, height } = imageSize;
+    const percentX = (box.x / width) * 100;
+    const percentY = (box.y / height) * 100;
+    const percentWidth = (box.width / width) * 100;
+    const percentHeight = (box.height / height) * 100;
+
+    return (
+      <Box
+        key={index}
+        sx={{
+          position: "absolute",
+          top: `${percentY}%`,
+          left: `${percentX}%`,
+          width: `${percentWidth}%`,
+          height: `${percentHeight}%`,
+          border: "2px solid red",
+        }}
+      />
+    );
+  });
 
   return (
     <Box

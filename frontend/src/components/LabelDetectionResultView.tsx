@@ -35,44 +35,23 @@ const LabelRow = ({
   );
 };
 
-export default ({
-  result,
-  showTopResult,
-}: {
-  result: LabelDetectionResult;
-  showTopResult: boolean;
-}) => {
+export default ({ result }: { result: LabelDetectionResult }) => {
   // Sort rows by confidence
   const rows = Object.entries(result)
     .map(([key, value]) => ({ key, value }))
     .sort((a, b) => b.value - a.value);
 
-  // Get highest confidence label and percentage
-  const highestConfidence = rows[0];
-  const label = highestConfidence.key;
-  const confidencePercentage = (highestConfidence.value * 100).toFixed(0);
-
   return (
-    <>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableBody>
-            {rows.map(({ key, value }) => (
-              <TableRow key={key}>
-                <LabelRow label={key} confidence={value} />
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      {showTopResult ? (
-        <Alert severity="success">
-          <Typography variant="body1" sx={{ ml: 2 }}>
-            Image is classified as '{label}' with {confidencePercentage}%
-            confidence.
-          </Typography>
-        </Alert>
-      ) : null}
-    </>
+    <TableContainer component={Paper}>
+      <Table>
+        <TableBody>
+          {rows.map(({ key, value }) => (
+            <TableRow key={key}>
+              <LabelRow label={key} confidence={value} />
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 };
