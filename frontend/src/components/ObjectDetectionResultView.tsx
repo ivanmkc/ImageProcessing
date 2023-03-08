@@ -1,3 +1,19 @@
+/**
+ * Copyright 2023 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import {
   LinearProgress,
   TableCell,
@@ -42,6 +58,16 @@ export default ({
   result: ObjectDetectionResult;
   showTopResult: boolean;
 }) => {
+  if (result.objectDetections.length == 0) {
+    return (
+      <Alert severity="info">
+        <Typography variant="body1" sx={{ ml: 2 }}>
+          No objects detected.
+        </Typography>
+      </Alert>
+    );
+  }
+
   // Sort rows by confidence
   const objectDetections = result.objectDetections.sort((a, b) =>
     a.confidence < b.confidence ? 1 : -1
