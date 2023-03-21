@@ -9,7 +9,7 @@ import {
   Typography,
   Alert,
 } from "@mui/material";
-import { LabelDetectionResult } from "queries";
+import { Annotation } from "queries";
 
 const LabelRow = ({
   label,
@@ -35,19 +35,17 @@ const LabelRow = ({
   );
 };
 
-export default ({ result }: { result: LabelDetectionResult }) => {
+export default ({ annotations }: { annotations: Annotation[] }) => {
   // Sort rows by confidence
-  const rows = Object.entries(result)
-    .map(([key, value]) => ({ key, value }))
-    .sort((a, b) => b.value - a.value);
+  const rows = annotations.sort((a, b) => b.score - a.score);
 
   return (
     <TableContainer component={Paper}>
       <Table>
         <TableBody>
-          {rows.map(({ key, value }) => (
-            <TableRow key={key}>
-              <LabelRow label={key} confidence={value} />
+          {rows.map(({ description, score }) => (
+            <TableRow key={description}>
+              <LabelRow label={description} confidence={score} />
             </TableRow>
           ))}
         </TableBody>

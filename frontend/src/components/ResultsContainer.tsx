@@ -79,7 +79,9 @@ const ResultContainer = ({ result }: { result: ImageUploadResult }) => {
               </TabPanel>
               <TabPanel value={selectedTab} index={1}>
                 {result.labelAnnotations != null ? (
-                  <LabelDetectionResultView result={result.labelAnnotations} />
+                  <LabelDetectionResultView
+                    annotations={result.labelAnnotations}
+                  />
                 ) : null}
               </TabPanel>
               <TabPanel value={selectedTab} index={2}>
