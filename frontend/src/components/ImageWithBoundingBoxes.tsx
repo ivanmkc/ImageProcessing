@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { ObjectDetectionResult, ObjectDetection } from "queries";
+import { LocalizedObjectAnnotation } from "queries";
 import { Box } from "@mui/material";
 
 const ImageWithBoundingBoxes = ({
   imageUrl,
-  objectDetectionResult,
+  objectAnnotations,
 }: {
   imageUrl: string;
-  objectDetectionResult?: ObjectDetectionResult;
+  objectAnnotations?: LocalizedObjectAnnotation[];
 }) => {
   const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
 
@@ -19,8 +19,8 @@ const ImageWithBoundingBoxes = ({
     image.src = imageUrl;
   }, [imageUrl]);
 
-  const boundingBoxes = objectDetectionResult?.objectDetections.map(
-    (detection: ObjectDetection) => detection.boundingBox
+  const boundingBoxes = objectAnnotations?.map(
+    (annotation: LocalizedObjectAnnotation) => annotation.boundingPoly
   );
 
   const boundingBoxElements = boundingBoxes?.map((box, index) => {

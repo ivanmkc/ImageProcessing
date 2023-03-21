@@ -38,6 +38,7 @@ const TabPanel = (props: TabPanelProps) => {
 };
 
 const ResultContainer = ({ result }: { result: ImageUploadResult }) => {
+  console.log("ResultContainer");
   const [selectedTab, setSelectedTab] = useState(0);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -49,10 +50,10 @@ const ResultContainer = ({ result }: { result: ImageUploadResult }) => {
       <Grid container spacing={4} padding={4} width="100%">
         <Grid item xs={12} md={6}>
           <ImageWithBoundingBoxes
-            objectDetectionResult={
-              selectedTab == 0 ? result.objectDetectionResult : undefined
+            objectAnnotations={
+              selectedTab == 0 ? result.localizedObjectAnnotations : undefined
             }
-            imageUrl={result.imageUrl}
+            imageUrl={""}
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -69,18 +70,16 @@ const ResultContainer = ({ result }: { result: ImageUploadResult }) => {
             </Tabs>
             <Box padding={2}>
               <TabPanel value={selectedTab} index={0}>
-                {result.objectDetectionResult != null ? (
+                {result.localizedObjectAnnotations != null ? (
                   <ObjectDetectionResultView
-                    result={result.objectDetectionResult}
+                    annotations={result.localizedObjectAnnotations}
                     showTopResult={true}
                   />
                 ) : null}
               </TabPanel>
               <TabPanel value={selectedTab} index={1}>
-                {result.labelDetectionResult != null ? (
-                  <LabelDetectionResultView
-                    result={result.labelDetectionResult}
-                  />
+                {result.labelAnnotations != null ? (
+                  <LabelDetectionResultView result={result.labelAnnotations} />
                 ) : null}
               </TabPanel>
               <TabPanel value={selectedTab} index={2}>

@@ -25,7 +25,7 @@ import {
   Typography,
   Alert,
 } from "@mui/material";
-import { ObjectDetectionResult } from "queries";
+import { LocalizedObjectAnnotation } from "queries";
 
 const LabelRow = ({
   label,
@@ -52,13 +52,14 @@ const LabelRow = ({
 };
 
 export default ({
-  result,
+  annotations,
   showTopResult,
 }: {
-  result: ObjectDetectionResult;
+  annotations: LocalizedObjectAnnotation[];
   showTopResult: boolean;
 }) => {
-  if (result.objectDetections.length == 0) {
+  console.log(annotations);
+  if (annotations.length == 0) {
     return (
       <Alert severity="info">
         <Typography variant="body1" sx={{ ml: 2 }}>
@@ -69,14 +70,14 @@ export default ({
   }
 
   // Sort rows by confidence
-  const objectDetections = result.objectDetections.sort((a, b) =>
-    a.confidence < b.confidence ? 1 : -1
+  const objectDetections = annotations.sort((a, b) =>
+    a.score < b.score ? 1 : -1
   );
 
   // Get highest confidence label and percentage
   const highestConfidence = objectDetections[0];
-  const label = highestConfidence.label;
-  const confidencePercentage = (highestConfidence.confidence * 100).toFixed(0);
+  const label = highestConfidence.name;
+  const confidencePercentage = (highestConfidence.score * 100).toFixed(0);
 
   return (
     <>
@@ -91,9 +92,9 @@ export default ({
       <TableContainer component={Paper}>
         <Table>
           <TableBody>
-            {objectDetections.map(({ label, confidence }) => (
-              <TableRow key={label}>
-                <LabelRow label={label} confidence={confidence} />
+            {objectDetections.map(({ name, score }) => (
+              <TableRow key={name}>
+                <LabelRow label={name} confidence={score} />
               </TableRow>
             ))}
           </TableBody>

@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,67 +15,137 @@
  */
 
 import axios from "axios";
+import sampleQuery from "mocks/sampleQueryResponse.json";
 
 const client = axios.create({ baseURL: import.meta.env.API_SERVER });
 
-export type LabelDetectionResult = {
-  [key: string]: number;
-};
+// export type LabelDetectionResult = {
+//   [key: string]: number;
+// };
 
-export interface ObjectDetection {
-  label: string;
+// export interface ObjectDetection {
+//   label: string;
+//   confidence: number;
+//   boundingBox: {
+//     x: number;
+//     y: number;
+//     width: number;
+//     height: number;
+//   };
+// }
+
+// export interface ObjectDetectionResult {
+//   objectDetections: ObjectDetection[];
+// }
+export interface ImagePropertiesAnnotation {}
+
+export interface Vertex {
+  x: number;
+  y: number;
+}
+export interface Poly {
+  vertices: Vertex[];
+  normalizedVertices: Vertex[]; // What is this?
+}
+
+export interface Annotation {
+  mid: string;
+  description: string;
+  score: number;
+  locale: string;
   confidence: number;
-  boundingBox: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  };
+  topicality: number;
+  properties: any[]; // What is this?
 }
 
-export interface ObjectDetectionResult {
-  objectDetections: ObjectDetection[];
+export interface Landmark {
+  type: number;
+  position: { x: number; y: number; z: number };
 }
 
-export interface SegmentationLayer {
-  label: string;
-  confidence: number;
-  mask: number[][];
-}
-export interface SegmentationResult {
-  segmentationLayers: SegmentationLayer[];
+export interface FaceAnnotation {
+  boundingPoly: Poly;
+  fdBoundingPoly: Poly;
+  landmarks: Landmark[];
+  rollAngle: number;
+  panAngle: number;
+  tiltAngle: number;
+  detectionConfidence: number;
+  landmarkingConfidence: number;
+  joyLikelihood: number;
+  sorrowLikelihood: number;
+  angerLikelihood: number;
+  surpriseLikelihood: number;
+  underExposedLikelihood: number;
+  blurredLikelihood: number;
+  headwearLikelihood: number;
 }
 
+export interface LocalizedObjectAnnotation {
+  mid: string;
+  name: string;
+  score: number;
+  boundingPoly: Poly;
+  languageCode: string;
+}
+export interface Location {
+  latLng: { latitude: number; longitude: number };
+}
+
+export interface LandmarkAnnotation extends Annotation {
+  boundingPoly: Poly;
+  locations: Location[];
+}
+
+export interface SafeSearchAnnotation {
+  adult: number;
+  spoof: number;
+  medical: number;
+  violence: number;
+  racy: number;
+}
 export interface ImageUploadResult {
-  imageUrl: string;
-  objectDetectionResult?: ObjectDetectionResult;
-  labelDetectionResult?: LabelDetectionResult;
+  // imageUrl: string;
+  // objectDetectionResult?: ObjectDetectionResult;
+
+  faceAnnotations?: FaceAnnotation[];
+  landmarkAnnotations?: LandmarkAnnotation[];
+  labelAnnotations?: Annotation[];
+  textAnnotations?: LandmarkAnnotation[];
+  safeSearchAnnotation?: SafeSearchAnnotation;
+  imagePropertiesAnnotation?: ImagePropertiesAnnotation;
+  localizedObjectAnnotations?: LocalizedObjectAnnotation[];
+
+  cropHintsAnnotation?: any;
+  fullTextAnnotation?: any;
+  webDetection?: any;
+  logoAnnotations?: any;
 }
 
-const objectDetectionResult: ObjectDetectionResult = {
-  objectDetections: [
-    {
-      label: "cat",
-      confidence: 0.92,
-      boundingBox: {
-        x: 100,
-        y: 200,
-        width: 50,
-        height: 100,
-      },
-    },
-    {
-      label: "dog",
-      confidence: 0.85,
-      boundingBox: {
-        x: 300,
-        y: 150,
-        width: 70,
-        height: 70,
-      },
-    },
-  ],
-};
+// const objectDetectionResult: ObjectDetectionResult = {
+//   objectDetections: [
+//     {
+//       label: "cat",
+//       confidence: 0.92,
+//       boundingBox: {
+//         x: 100,
+//         y: 200,
+//         width: 50,
+//         height: 100,
+//       },
+//     },
+//     {
+//       label: "dog",
+//       confidence: 0.85,
+//       boundingBox: {
+//         x: 300,
+//         y: 150,
+//         width: 70,
+//         height: 70,
+//       },
+//     },
+//   ],
+// };
 
 export async function uploadImage(file: File): Promise<ImageUploadResult> {
   // const formData = new FormData();
@@ -84,9 +154,5 @@ export async function uploadImage(file: File): Promise<ImageUploadResult> {
   //   .post<ImageUploadResult>("/upload-image", formData)
   //   .then((response) => response.data);
 
-  return Promise.resolve({
-    imageUrl: "http://placekitten.com/600/600",
-    objectDetectionResult: objectDetectionResult,
-    labelDetectionResult: { burger: 0.2, cat: 0.7, "hot dog": 0.1 },
-  });
+  return Promise.resolve(sampleQuery);
 }

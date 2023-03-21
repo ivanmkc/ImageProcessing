@@ -1,0 +1,1121 @@
+{
+  "faceAnnotations": [
+    {
+      "boundingPoly": {
+        "vertices": [
+          {
+            "x": 617,
+            "y": 785
+          },
+          {
+            "x": 678,
+            "y": 785
+          },
+          {
+            "x": 678,
+            "y": 856
+          },
+          {
+            "x": 617,
+            "y": 856
+          }
+        ],
+        "normalizedVertices": []
+      },
+      "fdBoundingPoly": {
+        "vertices": [
+          {
+            "x": 611,
+            "y": 788
+          },
+          {
+            "x": 668,
+            "y": 788
+          },
+          {
+            "x": 668,
+            "y": 845
+          },
+          {
+            "x": 611,
+            "y": 845
+          }
+        ],
+        "normalizedVertices": []
+      },
+      "landmarks": [
+        {
+          "type": 1,
+          "position": {
+            "x": 634.59576,
+            "y": 813.3767,
+            "z": -0.0005478859
+          }
+        },
+        {
+          "type": 2,
+          "position": {
+            "x": 642.329,
+            "y": 816.2272,
+            "z": -15.589346
+          }
+        },
+        {
+          "type": 3,
+          "position": {
+            "x": 632.58026,
+            "y": 807.5738,
+            "z": 6.530408
+          }
+        },
+        {
+          "type": 4,
+          "position": {
+            "x": 635.90674,
+            "y": 808.23724,
+            "z": -5.9258013
+          }
+        },
+        {
+          "type": 5,
+          "position": {
+            "x": 640.2052,
+            "y": 809.70593,
+            "z": -13.610504
+          }
+        },
+        {
+          "type": 6,
+          "position": {
+            "x": 647.2722,
+            "y": 814.7355,
+            "z": -20.40593
+          }
+        },
+        {
+          "type": 7,
+          "position": {
+            "x": 636.4485,
+            "y": 813.19226,
+            "z": -9.844694
+          }
+        },
+        {
+          "type": 8,
+          "position": {
+            "x": 626.96796,
+            "y": 821.9696,
+            "z": -12.322785
+          }
+        },
+        {
+          "type": 9,
+          "position": {
+            "x": 627.85657,
+            "y": 829.8479,
+            "z": -10.067287
+          }
+        },
+        {
+          "type": 10,
+          "position": {
+            "x": 627.3474,
+            "y": 835.3694,
+            "z": -9.329361
+          }
+        },
+        {
+          "type": 11,
+          "position": {
+            "x": 627.0632,
+            "y": 831.3865,
+            "z": -0.70949435
+          }
+        },
+        {
+          "type": 12,
+          "position": {
+            "x": 634.4755,
+            "y": 835.15094,
+            "z": -13.943249
+          }
+        },
+        {
+          "type": 13,
+          "position": {
+            "x": 628.5276,
+            "y": 832.88385,
+            "z": -9.389698
+          }
+        },
+        {
+          "type": 14,
+          "position": {
+            "x": 633.8715,
+            "y": 826.99066,
+            "z": -13.232539
+          }
+        },
+        {
+          "type": 15,
+          "position": {
+            "x": 628.8135,
+            "y": 824.7775,
+            "z": -4.316909
+          }
+        },
+        {
+          "type": 16,
+          "position": {
+            "x": 629.44025,
+            "y": 826.10864,
+            "z": -10.181482
+          }
+        },
+        {
+          "type": 17,
+          "position": {
+            "x": 634.31525,
+            "y": 811.52783,
+            "z": -0.35577774
+          }
+        },
+        {
+          "type": 18,
+          "position": {
+            "x": 636.2424,
+            "y": 814.3204,
+            "z": -3.2364771
+          }
+        },
+        {
+          "type": 19,
+          "position": {
+            "x": 633.52795,
+            "y": 814.4628,
+            "z": 0.20229673
+          }
+        },
+        {
+          "type": 20,
+          "position": {
+            "x": 633.14923,
+            "y": 812.88776,
+            "z": 4.4830594
+          }
+        },
+        {
+          "type": 21,
+          "position": {
+            "x": 642.71356,
+            "y": 814.5533,
+            "z": -16.469454
+          }
+        },
+        {
+          "type": 22,
+          "position": {
+            "x": 645.7016,
+            "y": 817.9006,
+            "z": -18.219006
+          }
+        },
+        {
+          "type": 23,
+          "position": {
+            "x": 641.81805,
+            "y": 817.7316,
+            "z": -15.932463
+          }
+        },
+        {
+          "type": 24,
+          "position": {
+            "x": 639.9865,
+            "y": 815.2396,
+            "z": -12.205726
+          }
+        },
+        {
+          "type": 25,
+          "position": {
+            "x": 634.79175,
+            "y": 806.7596,
+            "z": -0.47349644
+          }
+        },
+        {
+          "type": 26,
+          "position": {
+            "x": 643.6697,
+            "y": 810.50867,
+            "z": -17.580202
+          }
+        },
+        {
+          "type": 27,
+          "position": {
+            "x": 642.2893,
+            "y": 820.10406,
+            "z": 22.820065
+          }
+        },
+        {
+          "type": 28,
+          "position": {
+            "x": 663.6107,
+            "y": 834.46735,
+            "z": -13.905898
+          }
+        },
+        {
+          "type": 31,
+          "position": {
+            "x": 637.7229,
+            "y": 809.5332,
+            "z": -10.124921
+          }
+        },
+        {
+          "type": 32,
+          "position": {
+            "x": 626.35126,
+            "y": 844.25085,
+            "z": -7.795306
+          }
+        },
+        {
+          "type": 33,
+          "position": {
+            "x": 636.28973,
+            "y": 835.82336,
+            "z": 15.629369
+          }
+        },
+        {
+          "type": 34,
+          "position": {
+            "x": 650.40625,
+            "y": 844.6435,
+            "z": -14.083641
+          }
+        },
+        {
+          "type": 35,
+          "position": {
+            "x": 628.61725,
+            "y": 824.31415,
+            "z": 4.494566
+          }
+        },
+        {
+          "type": 36,
+          "position": {
+            "x": 640.8827,
+            "y": 829.454,
+            "z": -17.63721
+          }
+        }
+      ],
+      "rollAngle": 20.195742,
+      "panAngle": -58.296085,
+      "tiltAngle": -1.4674228,
+      "detectionConfidence": 0.5969686,
+      "landmarkingConfidence": 0.23656939,
+      "joyLikelihood": 1,
+      "sorrowLikelihood": 1,
+      "angerLikelihood": 1,
+      "surpriseLikelihood": 1,
+      "underExposedLikelihood": 1,
+      "blurredLikelihood": 1,
+      "headwearLikelihood": 1
+    }
+  ],
+  "landmarkAnnotations": [
+    {
+      "mid": "/m/02j81",
+      "description": "Eiffel Tower",
+      "score": 0.7872524,
+      "boundingPoly": {
+        "vertices": [
+          {
+            "x": 480,
+            "y": 339
+          },
+          {
+            "x": 729,
+            "y": 339
+          },
+          {
+            "x": 729,
+            "y": 753
+          },
+          {
+            "x": 480,
+            "y": 753
+          }
+        ],
+        "normalizedVertices": []
+      },
+      "locations": [
+        {
+          "latLng": {
+            "latitude": 48.858461,
+            "longitude": 2.294351
+          }
+        }
+      ],
+      "locale": "",
+      "confidence": 0.0,
+      "topicality": 0.0,
+      "properties": []
+    }
+  ],
+  "labelAnnotations": [
+    {
+      "mid": "/m/0c9ph5",
+      "description": "Flower",
+      "score": 0.9817062,
+      "topicality": 0.9817062,
+      "locale": "",
+      "confidence": 0.0,
+      "locations": [],
+      "properties": []
+    },
+    {
+      "mid": "/m/01bqvp",
+      "description": "Sky",
+      "score": 0.96746653,
+      "topicality": 0.96746653,
+      "locale": "",
+      "confidence": 0.0,
+      "locations": [],
+      "properties": []
+    },
+    {
+      "mid": "/m/05s2s",
+      "description": "Plant",
+      "score": 0.96726525,
+      "topicality": 0.96726525,
+      "locale": "",
+      "confidence": 0.0,
+      "locations": [],
+      "properties": []
+    },
+    {
+      "mid": "/m/0csby",
+      "description": "Cloud",
+      "score": 0.9606694,
+      "topicality": 0.9606694,
+      "locale": "",
+      "confidence": 0.0,
+      "locations": [],
+      "properties": []
+    },
+    {
+      "mid": "/m/05h0n",
+      "description": "Nature",
+      "score": 0.9005312,
+      "topicality": 0.9005312,
+      "locale": "",
+      "confidence": 0.0,
+      "locations": [],
+      "properties": []
+    },
+    {
+      "mid": "/m/016q19",
+      "description": "Petal",
+      "score": 0.8986012,
+      "topicality": 0.8986012,
+      "locale": "",
+      "confidence": 0.0,
+      "locations": [],
+      "properties": []
+    },
+    {
+      "mid": "/j/3gbwgn",
+      "description": "People in nature",
+      "score": 0.8977122,
+      "topicality": 0.8977122,
+      "locale": "",
+      "confidence": 0.0,
+      "locations": [],
+      "properties": []
+    },
+    {
+      "mid": "/m/01d40f",
+      "description": "Dress",
+      "score": 0.897624,
+      "topicality": 0.897624,
+      "locale": "",
+      "confidence": 0.0,
+      "locations": [],
+      "properties": []
+    },
+    {
+      "mid": "/m/07j7r",
+      "description": "Tree",
+      "score": 0.89433765,
+      "topicality": 0.89433765,
+      "locale": "",
+      "confidence": 0.0,
+      "locations": [],
+      "properties": []
+    },
+    {
+      "mid": "/m/01bwr",
+      "description": "Botany",
+      "score": 0.8863469,
+      "topicality": 0.8863469,
+      "locale": "",
+      "confidence": 0.0,
+      "locations": [],
+      "properties": []
+    }
+  ],
+  "textAnnotations": [
+    {
+      "locale": "und",
+      "description": "PEET",
+      "boundingPoly": {
+        "vertices": [
+          {
+            "x": 584,
+            "y": 755
+          },
+          {
+            "x": 629,
+            "y": 755
+          },
+          {
+            "x": 629,
+            "y": 781
+          },
+          {
+            "x": 584,
+            "y": 781
+          }
+        ],
+        "normalizedVertices": []
+      },
+      "mid": "",
+      "score": 0.0,
+      "confidence": 0.0,
+      "topicality": 0.0,
+      "locations": [],
+      "properties": []
+    },
+    {
+      "description": "PEET",
+      "boundingPoly": {
+        "vertices": [
+          {
+            "x": 584,
+            "y": 769
+          },
+          {
+            "x": 625,
+            "y": 755
+          },
+          {
+            "x": 629,
+            "y": 768
+          },
+          {
+            "x": 588,
+            "y": 781
+          }
+        ],
+        "normalizedVertices": []
+      },
+      "mid": "",
+      "locale": "",
+      "score": 0.0,
+      "confidence": 0.0,
+      "topicality": 0.0,
+      "locations": [],
+      "properties": []
+    }
+  ],
+  "safeSearchAnnotation": {
+    "adult": 1,
+    "spoof": 1,
+    "medical": 1,
+    "violence": 1,
+    "racy": 1
+  },
+  "imagePropertiesAnnotation": {
+    "dominantColors": {
+      "colors": [
+        {
+          "color": {
+            "red": 200.0,
+            "green": 5.0,
+            "blue": 25.0
+          },
+          "score": 0.13882063,
+          "pixelFraction": 0.002388889
+        },
+        {
+          "color": {
+            "red": 163.0,
+            "green": 153.0,
+            "blue": 152.0
+          },
+          "score": 0.05652862,
+          "pixelFraction": 0.0215
+        },
+        {
+          "color": {
+            "red": 156.0,
+            "green": 147.0,
+            "blue": 187.0
+          },
+          "score": 0.03539713,
+          "pixelFraction": 0.0037777778
+        },
+        {
+          "color": {
+            "red": 65.0,
+            "green": 90.0,
+            "blue": 54.0
+          },
+          "score": 0.025611911,
+          "pixelFraction": 0.053666666
+        },
+        {
+          "color": {
+            "red": 174.0,
+            "green": 84.0,
+            "blue": 83.0
+          },
+          "score": 0.009687584,
+          "pixelFraction": 0.0039444445
+        },
+        {
+          "color": {
+            "red": 66.0,
+            "green": 7.0,
+            "blue": 1.0
+          },
+          "score": 0.0015882669,
+          "pixelFraction": 0.001
+        },
+        {
+          "color": {
+            "red": 210.0,
+            "green": 12.0,
+            "blue": 29.0
+          },
+          "score": 0.08155094,
+          "pixelFraction": 0.0017777778
+        },
+        {
+          "color": {
+            "red": 188.0,
+            "green": 5.0,
+            "blue": 34.0
+          },
+          "score": 0.05227178,
+          "pixelFraction": 0.003888889
+        },
+        {
+          "color": {
+            "red": 201.0,
+            "green": 194.0,
+            "blue": 193.0
+          },
+          "score": 0.047794938,
+          "pixelFraction": 0.05127778
+        },
+        {
+          "color": {
+            "red": 130.0,
+            "green": 119.0,
+            "blue": 117.0
+          },
+          "score": 0.04402799,
+          "pixelFraction": 0.023277778
+        }
+      ]
+    }
+  },
+  "cropHintsAnnotation": {
+    "cropHints": [
+      {
+        "boundingPoly": {
+          "vertices": [
+            {
+              "x": 180,
+              "y": 0
+            },
+            {
+              "x": 1020,
+              "y": 0
+            },
+            {
+              "x": 1020,
+              "y": 1499
+            },
+            {
+              "x": 180,
+              "y": 1499
+            }
+          ],
+          "normalizedVertices": []
+        },
+        "confidence": 0.46874997,
+        "importanceFraction": 1.0
+      }
+    ]
+  },
+  "fullTextAnnotation": {
+    "pages": [
+      {
+        "width": 1200,
+        "height": 1500,
+        "blocks": [
+          {
+            "boundingBox": {
+              "vertices": [
+                {
+                  "x": 584,
+                  "y": 769
+                },
+                {
+                  "x": 625,
+                  "y": 755
+                },
+                {
+                  "x": 629,
+                  "y": 768
+                },
+                {
+                  "x": 588,
+                  "y": 781
+                }
+              ],
+              "normalizedVertices": []
+            },
+            "paragraphs": [
+              {
+                "boundingBox": {
+                  "vertices": [
+                    {
+                      "x": 584,
+                      "y": 769
+                    },
+                    {
+                      "x": 625,
+                      "y": 755
+                    },
+                    {
+                      "x": 629,
+                      "y": 768
+                    },
+                    {
+                      "x": 588,
+                      "y": 781
+                    }
+                  ],
+                  "normalizedVertices": []
+                },
+                "words": [
+                  {
+                    "boundingBox": {
+                      "vertices": [
+                        {
+                          "x": 584,
+                          "y": 769
+                        },
+                        {
+                          "x": 625,
+                          "y": 755
+                        },
+                        {
+                          "x": 629,
+                          "y": 768
+                        },
+                        {
+                          "x": 588,
+                          "y": 781
+                        }
+                      ],
+                      "normalizedVertices": []
+                    },
+                    "symbols": [
+                      {
+                        "boundingBox": {
+                          "vertices": [
+                            {
+                              "x": 584,
+                              "y": 770
+                            },
+                            {
+                              "x": 594,
+                              "y": 767
+                            },
+                            {
+                              "x": 598,
+                              "y": 778
+                            },
+                            {
+                              "x": 588,
+                              "y": 781
+                            }
+                          ],
+                          "normalizedVertices": []
+                        },
+                        "text": "P",
+                        "confidence": 0.25862634
+                      },
+                      {
+                        "boundingBox": {
+                          "vertices": [
+                            {
+                              "x": 596,
+                              "y": 766
+                            },
+                            {
+                              "x": 605,
+                              "y": 763
+                            },
+                            {
+                              "x": 609,
+                              "y": 774
+                            },
+                            {
+                              "x": 600,
+                              "y": 777
+                            }
+                          ],
+                          "normalizedVertices": []
+                        },
+                        "text": "E",
+                        "confidence": 0.2937279
+                      },
+                      {
+                        "boundingBox": {
+                          "vertices": [
+                            {
+                              "x": 606,
+                              "y": 762
+                            },
+                            {
+                              "x": 617,
+                              "y": 758
+                            },
+                            {
+                              "x": 621,
+                              "y": 770
+                            },
+                            {
+                              "x": 610,
+                              "y": 773
+                            }
+                          ],
+                          "normalizedVertices": []
+                        },
+                        "text": "E",
+                        "confidence": 0.3599914
+                      },
+                      {
+                        "property": {
+                          "detectedBreak": {
+                            "type": 5,
+                            "isPrefix": false
+                          },
+                          "detectedLanguages": []
+                        },
+                        "boundingBox": {
+                          "vertices": [
+                            {
+                              "x": 615,
+                              "y": 759
+                            },
+                            {
+                              "x": 624,
+                              "y": 756
+                            },
+                            {
+                              "x": 628,
+                              "y": 767
+                            },
+                            {
+                              "x": 619,
+                              "y": 770
+                            }
+                          ],
+                          "normalizedVertices": []
+                        },
+                        "text": "T",
+                        "confidence": 0.29624593
+                      }
+                    ],
+                    "confidence": 0.3021479
+                  }
+                ],
+                "confidence": 0.3021479
+              }
+            ],
+            "blockType": 1,
+            "confidence": 0.3021479
+          }
+        ],
+        "confidence": 0.3021479
+      }
+    ],
+    "text": "PEET"
+  },
+  "webDetection": {
+    "webEntities": [
+      {
+        "entityId": "/m/02j81",
+        "score": 1.3575,
+        "description": "Eiffel Tower"
+      },
+      {
+        "entityId": "/m/01f3dd",
+        "score": 0.64005,
+        "description": "Champ de Mars"
+      },
+      {
+        "entityId": "/m/0jg24",
+        "score": 0.638,
+        "description": "Image"
+      },
+      {
+        "entityId": "/m/01fdzj",
+        "score": 0.59843767,
+        "description": "Tower"
+      },
+      {
+        "entityId": "/m/05wkw",
+        "score": 0.5733,
+        "description": "Photography"
+      },
+      {
+        "entityId": "/m/068jd",
+        "score": 0.5001,
+        "description": "Photograph"
+      },
+      {
+        "entityId": "/m/01d40f",
+        "score": 0.4442,
+        "description": "Dress"
+      },
+      {
+        "entityId": "/m/063_kqw",
+        "score": 0.437,
+        "description": "Maxi dress"
+      },
+      {
+        "entityId": "/m/032tl",
+        "score": 0.4344,
+        "description": "Fashion"
+      },
+      {
+        "entityId": "/g/11j7ys78fd",
+        "score": 0.4321,
+        "description": "Prom dresses"
+      }
+    ],
+    "fullMatchingImages": [
+      {
+        "url": "https://annaeverywhere.com/wp-content/uploads/2018/11/DSC5980-Edit.jpg",
+        "score": 0.0
+      },
+      {
+        "url": "https://static.nc-myus.com/images/pub/www/uploads/image/feaf92b22562477aad263426ca040d6a/Anna_Karsten_1.PNG",
+        "score": 0.0
+      },
+      {
+        "url": "https://i.pinimg.com/236x/79/57/8d/79578dc69ac7d61ed2a63ed94a5efabe.jpg",
+        "score": 0.0
+      }
+    ],
+    "pagesWithMatchingImages": [
+      {
+        "url": "https://annaeverywhere.com/best-eiffel-tower-photo-spots/",
+        "pageTitle": "10 Best Eiffel Tower Photo Spots in Paris - Anna Everywhere",
+        "fullMatchingImages": [
+          {
+            "url": "https://annaeverywhere.com/wp-content/uploads/2018/11/DSC5980-Edit.jpg",
+            "score": 0.0
+          }
+        ],
+        "score": 0.0,
+        "partialMatchingImages": []
+      },
+      {
+        "url": "http://unis.sn/maxi-tower-amazon-k.html",
+        "pageTitle": "Ost verraten Herumlaufen maxi tower amazon Aufregung Koch ...",
+        "fullMatchingImages": [
+          {
+            "url": "https://i.pinimg.com/236x/79/57/8d/79578dc69ac7d61ed2a63ed94a5efabe.jpg",
+            "score": 0.0
+          }
+        ],
+        "score": 0.0,
+        "partialMatchingImages": []
+      },
+      {
+        "url": "https://www.myus.com/blog/poland-hottest-fashion-lifestyle-bloggers-2018/",
+        "pageTitle": "Poland&#39;s Hottest Fashion &amp; Lifestyle Bloggers of 2018 - MyUS.com",
+        "fullMatchingImages": [
+          {
+            "url": "https://static.nc-myus.com/images/pub/www/uploads/image/feaf92b22562477aad263426ca040d6a/Anna_Karsten_1.PNG",
+            "score": 0.0
+          }
+        ],
+        "score": 0.0,
+        "partialMatchingImages": []
+      },
+      {
+        "url": "https://mpf.gov.mv/maxi-tower-amazon-k.html",
+        "pageTitle": "fark imparator durulama maxi tower amazon Uygun tepe Reakt\u00f6r",
+        "fullMatchingImages": [
+          {
+            "url": "https://i.pinimg.com/236x/79/57/8d/79578dc69ac7d61ed2a63ed94a5efabe.jpg",
+            "score": 0.0
+          }
+        ],
+        "score": 0.0,
+        "partialMatchingImages": []
+      }
+    ],
+    "visuallySimilarImages": [
+      {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Eiffel_Tower-view_from_Champ_de_Mars_Paris.jpg/1200px-Eiffel_Tower-view_from_Champ_de_Mars_Paris.jpg",
+        "score": 0.0
+      },
+      {
+        "url": "http://www.castlephiletravels.com/blog/wp-content/uploads/eiffeltower_champsdemars1.jpg",
+        "score": 0.0
+      },
+      {
+        "url": "https://www.france-voyage.com/visuals/photos/champ-mars-garden-36380_w600.webp",
+        "score": 0.0
+      },
+      {
+        "url": "https://www.france-voyage.com/visuals/photos/champ-mars-garden-36380_w400.webp",
+        "score": 0.0
+      },
+      {
+        "url": "https://fridaywereinlove.com/wp-content/uploads/2013/10/e09f1-img_1730copy.jpg",
+        "score": 0.0
+      },
+      {
+        "url": "https://thumbs.dreamstime.com/b/champ-de-mars-eiffel-tower-paris-france-th-june-people-stroll-along-alley-foot-largest-green-area-capital-fencing-170176523.jpg",
+        "score": 0.0
+      },
+      {
+        "url": "https://thumbs.dreamstime.com/b/eiffel-tower-champs-de-mars-20742488.jpg",
+        "score": 0.0
+      },
+      {
+        "url": "https://media.istockphoto.com/id/936340620/photo/eiffel-tower-and-people-on-champ-de-mars.jpg?s=170667a&w=0&k=20&c=pQfmFEDOL7XhVJ2HUbh_iZWnpHiARajjvj18-II9RxU=",
+        "score": 0.0
+      },
+      {
+        "url": "https://www.france-voyage.com/visuals/photos/champ-mars-garden-36376_w600.webp",
+        "score": 0.0
+      },
+      {
+        "url": "https://ca-times.brightspotcdn.com/dims4/default/095e839/2147483647/strip/true/crop/8471x5502+0+0/resize/1200x779!/quality/80/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F9c%2F3c%2F085dad3b8e863e214a1a90389976%2Fd4e479ac8e6d49958f78a3726cf2916a",
+        "score": 0.0
+      }
+    ],
+    "bestGuessLabels": [
+      {
+        "label": "champ de mars",
+        "languageCode": ""
+      }
+    ],
+    "partialMatchingImages": []
+  },
+  "localizedObjectAnnotations": [
+    {
+      "mid": "/m/01d40f",
+      "name": "Dress",
+      "score": 0.92711735,
+      "boundingPoly": {
+        "normalizedVertices": [
+          {
+            "x": 0.42313716,
+            "y": 0.55614805
+          },
+          {
+            "x": 0.657122,
+            "y": 0.55614805
+          },
+          {
+            "x": 0.657122,
+            "y": 0.8301842
+          },
+          {
+            "x": 0.42313716,
+            "y": 0.8301842
+          }
+        ],
+        "vertices": []
+      },
+      "languageCode": ""
+    },
+    {
+      "mid": "/m/01g317",
+      "name": "Person",
+      "score": 0.86975265,
+      "boundingPoly": {
+        "normalizedVertices": [
+          {
+            "x": 0.39933202,
+            "y": 0.5404331
+          },
+          {
+            "x": 0.6603591,
+            "y": 0.5404331
+          },
+          {
+            "x": 0.6603591,
+            "y": 0.85361356
+          },
+          {
+            "x": 0.39933202,
+            "y": 0.85361356
+          }
+        ],
+        "vertices": []
+      },
+      "languageCode": ""
+    },
+    {
+      "mid": "/m/01j51",
+      "name": "Balloon",
+      "score": 0.8541087,
+      "boundingPoly": {
+        "normalizedVertices": [
+          {
+            "x": 0.29732576,
+            "y": 0.28321502
+          },
+          {
+            "x": 0.4212019,
+            "y": 0.28321502
+          },
+          {
+            "x": 0.4212019,
+            "y": 0.390317
+          },
+          {
+            "x": 0.29732576,
+            "y": 0.390317
+          }
+        ],
+        "vertices": []
+      },
+      "languageCode": ""
+    }
+  ],
+  "logoAnnotations": []
+}
