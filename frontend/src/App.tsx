@@ -46,10 +46,23 @@ const LoadingAlert = () => (
 
 const ImageUploadPage = () => {
   const [selectedFile, setFile] = useState<File | null>(null);
+  const [imageUrl, setImageSrc] = useState<string>("");
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files && files.length > 0) {
-      setFile(files[0]);
+      const file = files[0];
+      setFile(file);
+
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+        if (event.target?.result != null) {
+          setImageSrc(event.target.result as string);
+        }
+      };
+
+      reader.readAsDataURL(file);
     } else {
       setFile(null);
     }
@@ -98,7 +111,7 @@ const ImageUploadPage = () => {
                 {error && <ErrorAlert error={error} />}
                 {isLoading && <LoadingAlert />}
                 {uploadResult != null && (
-                  <ResultContainer result={uploadResult} />
+                  <ResultContainer imageUrl={imageUrl} result={uploadResult} />
                 )}
               </>
             ) : null}

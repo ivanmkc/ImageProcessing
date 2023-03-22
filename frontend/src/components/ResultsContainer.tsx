@@ -20,6 +20,7 @@ import { ImageUploadResult } from "queries";
 import ImageWithBoundingBoxes from "components/ImageWithBoundingBoxes";
 import LabelDetectionResultView from "components/LabelDetectionResultView";
 import ObjectDetectionResultView from "components/ObjectDetectionResultView";
+import SafeSearchResultView from "components/SafeSearchResultView";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -37,7 +38,13 @@ const TabPanel = (props: TabPanelProps) => {
   );
 };
 
-const ResultContainer = ({ result }: { result: ImageUploadResult }) => {
+const ResultContainer = ({
+  result,
+  imageUrl,
+}: {
+  imageUrl: string;
+  result: ImageUploadResult;
+}) => {
   console.log("ResultContainer");
   const [selectedTab, setSelectedTab] = useState(0);
 
@@ -53,7 +60,7 @@ const ResultContainer = ({ result }: { result: ImageUploadResult }) => {
             objectAnnotations={
               selectedTab == 0 ? result.localizedObjectAnnotations : undefined
             }
-            imageUrl={""}
+            imageUrl={imageUrl}
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -88,7 +95,11 @@ const ResultContainer = ({ result }: { result: ImageUploadResult }) => {
                 <Typography>TODO: Properties</Typography>
               </TabPanel>
               <TabPanel value={selectedTab} index={3}>
-                <Typography>TODO: Safe Search</Typography>
+                {result.safeSearchAnnotation != null ? (
+                  <SafeSearchResultView
+                    annotation={result.safeSearchAnnotation}
+                  />
+                ) : null}
               </TabPanel>
             </Box>
           </Paper>
