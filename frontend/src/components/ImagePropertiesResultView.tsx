@@ -24,30 +24,42 @@ const ColorRow = ({
   //   CONFIDENCE_LEVELS_MAP[confidence.toString()]["label"];
   // const confidencePercent: number =
   //   CONFIDENCE_LEVELS_MAP[confidence.toString()]["confidencePercent"];
-  const background = `rgb(${color.red}, ${color.green}, ${color.blue})`;
+  const colorString = `${color.red},${color.green},${color.blue}`;
 
   return (
-    <TableCell align="right" sx={{ backgroundColor: background }}>
+    <TableCell align="right">
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <Typography variant="caption" style={{ alignSelf: "flex-start" }}>
-          {`r:${color.red}, g:${color.green}, b:${color.blue}`}
+          {`RGB = (${color.red}, ${color.green}, ${color.blue})`}
         </Typography>
         <Typography variant="caption" style={{ alignSelf: "flex-end" }}>
-          {pixelFraction * 100}%
+          {(pixelFraction * 100).toFixed(0)}%
         </Typography>
       </div>
-      <LinearProgress variant="determinate" value={pixelFraction * 100} />
+      <LinearProgress
+        sx={{
+          backgroundColor: `rgb(${colorString}, 0.4)`,
+          "& .MuiLinearProgress-bar": {
+            backgroundColor: `rgb(${colorString})`,
+          },
+          height: "20px",
+        }}
+        variant="determinate"
+        value={pixelFraction * 100}
+      />
     </TableCell>
   );
 };
 
 export default ({ annotation }: { annotation: ImagePropertiesAnnotation }) => {
+  console.log(annotation);
   return (
     <TableContainer component={Paper}>
       <Table>
         <TableBody>
-          {annotation.dominantColors.map(
-            ({ color, score, pixelFraction }, index) => (
+          {annotation.dominantColors.colors
+            .sort((a, b) => b.pixelFraction - a.pixelFraction)
+            .map(({ color, score, pixelFraction }, index) => (
               <TableRow key={index}>
                 <ColorRow
                   color={color}
@@ -55,8 +67,7 @@ export default ({ annotation }: { annotation: ImagePropertiesAnnotation }) => {
                   pixelFraction={pixelFraction}
                 />
               </TableRow>
-            )
-          )}
+            ))}
         </TableBody>
       </Table>
     </TableContainer>

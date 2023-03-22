@@ -44,7 +44,9 @@ export interface Color {
   blue: number;
 }
 export interface ImagePropertiesAnnotation {
-  dominantColors: { color: Color; score: number; pixelFraction: number }[];
+  dominantColors: {
+    colors: { color: Color; score: number; pixelFraction: number }[];
+  };
 }
 
 interface Vertex {
@@ -155,9 +157,16 @@ export interface ImageUploadResult {
 //   ],
 // };
 
+const ALL_TYPES =
+  "CROP_HINTS,DOCUMENT_TEXT_DETECTION,FACE_DETECTION,IMAGE_PROPERTIES,LABEL_DETECTION,LANDMARK_DETECTION,LOGO_DETECTION,OBJECT_LOCALIZATION,PRODUCT_SEARCH,SAFE_SEARCH_DETECTION,TEXT_DETECTION,TYPE_UNSPECIFIED,WEB_DETECTION";
+
 export async function uploadImage(file: File): Promise<ImageUploadResult> {
   const formData = new FormData();
   formData.append("image", file);
+  formData.append(
+    "features",
+    "FACE_DETECTION,IMAGE_PROPERTIES,LABEL_DETECTION,OBJECT_LOCALIZATION,SAFE_SEARCH_DETECTION"
+  );
   return client
     .post<ImageUploadResult>("/", formData)
     .then((response) => response.data);
