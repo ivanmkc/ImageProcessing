@@ -53,7 +53,7 @@ interface Vertex {
   x: number;
   y: number;
 }
-interface Poly {
+export interface Poly {
   vertices: Vertex[];
   normalizedVertices: Vertex[]; // What is this?
 }

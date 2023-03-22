@@ -1,13 +1,64 @@
 import React, { useEffect, useState } from "react";
-import { LocalizedObjectAnnotation } from "queries";
+import { FaceAnnotation, LocalizedObjectAnnotation, Poly } from "queries";
 import { Box } from "@mui/material";
+
+const BoundingBox = ({
+  index,
+  box,
+  selectedIndex,
+  imageWidth,
+  imageHeight,
+}: {
+  index: number;
+  box: Poly;
+  imageWidth: number;
+  imageHeight: number;
+  selectedIndex?: number;
+}) => {
+  let percentX: number;
+  let percentY: number;
+  let percentWidth: number;
+  let percentHeight: number;
+
+  if (box.vertices.length == 4) {
+    percentX = box.vertices[0].x / imageWidth;
+    percentY = box.vertices[0].y / imageHeight;
+    percentWidth = (box.vertices[2].x - box.vertices[0].x) / imageWidth;
+    percentHeight = (box.vertices[2].y - box.vertices[0].y) / imageHeight;
+  } else if (box.normalizedVertices.length == 4) {
+    percentX = box.normalizedVertices[0].x;
+    percentY = box.normalizedVertices[0].y;
+    percentWidth = box.normalizedVertices[2].x - box.normalizedVertices[0].x;
+    percentHeight = box.normalizedVertices[2].y - box.normalizedVertices[0].y;
+  } else {
+    return null;
+  }
+
+  return (
+    <Box
+      key={index}
+      sx={{
+        position: "absolute",
+        top: `${percentY * 100}%`,
+        left: `${percentX * 100}%`,
+        width: `${percentWidth * 100}%`,
+        height: `${percentHeight * 100}%`,
+        border: `${index == selectedIndex ? "4px" : "2px"} solid green`,
+      }}
+    />
+  );
+};
 
 const ImageWithBoundingBoxes = ({
   imageUrl,
   objectAnnotations,
+  faceAnnotations,
+  selectedIndex,
 }: {
   imageUrl: string;
   objectAnnotations?: LocalizedObjectAnnotation[];
+  faceAnnotations?: FaceAnnotation[];
+  selectedIndex?: number;
 }) => {
   const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
 
@@ -19,42 +70,50 @@ const ImageWithBoundingBoxes = ({
     image.src = imageUrl;
   }, [imageUrl]);
 
-  const boundingBoxes = objectAnnotations?.map(
-    (annotation: LocalizedObjectAnnotation) => annotation.boundingPoly
-  );
+  let boundingBoxElements: React.ReactNode[] = [];
 
-  const boundingBoxElements = boundingBoxes?.map((box, index) => {
-    const { width, height } = imageSize;
-    const percentX = (box.x / width) * 100;
-    const percentY = (box.y / height) * 100;
-    const percentWidth = (box.width / width) * 100;
-    const percentHeight = (box.height / height) * 100;
+  if (objectAnnotations != null) {
+    boundingBoxElements = objectAnnotations.map((annotation, index) => {
+      const box = annotation.boundingPoly;
 
-    return (
-      <Box
-        key={index}
-        sx={{
-          position: "absolute",
-          top: `${percentY}%`,
-          left: `${percentX}%`,
-          width: `${percentWidth}%`,
-          height: `${percentHeight}%`,
-          border: "2px solid red",
-        }}
-      />
-    );
-  });
+      return (
+        <BoundingBox
+          index={index}
+          box={box}
+          selectedIndex={selectedIndex}
+          imageWidth={imageSize.width}
+          imageHeight={imageSize.height}
+        />
+      );
+    });
+  } else if (faceAnnotations != null) {
+    boundingBoxElements = faceAnnotations.map((annotation, index) => {
+      const box = annotation.fdBoundingPoly;
+
+      return (
+        <BoundingBox
+          index={index}
+          box={box}
+          selectedIndex={selectedIndex}
+          imageWidth={imageSize.width}
+          imageHeight={imageSize.height}
+        />
+      );
+    });
+  }
 
   return (
     <Box
       sx={{
         width: "100%",
-        paddingTop: "100%",
+        aspectRatio: `${imageSize.width / imageSize.height}`,
+        paddingTop: "0%",
         position: "relative",
         backgroundImage: `url(${imageUrl})`,
         backgroundSize: "contain",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center center",
+        objectFit: "cover",
       }}
     >
       {boundingBoxElements}

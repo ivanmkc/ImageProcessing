@@ -54,9 +54,11 @@ const LabelRow = ({
 export default ({
   annotations,
   showTopResult,
+  onIndexSelected,
 }: {
   annotations: LocalizedObjectAnnotation[];
   showTopResult: boolean;
+  onIndexSelected?: (index?: number) => void;
 }) => {
   if (annotations.length == 0) {
     return (
@@ -91,8 +93,20 @@ export default ({
       <TableContainer component={Paper}>
         <Table>
           <TableBody>
-            {objectDetections.map(({ name, score }) => (
-              <TableRow key={name}>
+            {objectDetections.map(({ name, score }, index) => (
+              <TableRow
+                key={index}
+                onMouseEnter={() => {
+                  if (onIndexSelected) {
+                    onIndexSelected(index);
+                  }
+                }}
+                onMouseLeave={() => {
+                  if (onIndexSelected) {
+                    onIndexSelected(undefined);
+                  }
+                }}
+              >
                 <LabelRow label={name} confidence={score} />
               </TableRow>
             ))}

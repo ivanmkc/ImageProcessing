@@ -48,7 +48,8 @@ const ResultContainer = ({
   result: ImageUploadResult;
 }) => {
   console.log("ResultContainer");
-  const [selectedTab, setSelectedTab] = useState(0);
+  const [selectedTab, setSelectedTab] = useState<number>(0);
+  const [selectedIndex, setSelectedIndex] = useState<number>();
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setSelectedTab(newValue);
@@ -62,7 +63,11 @@ const ResultContainer = ({
             objectAnnotations={
               selectedTab == 0 ? result.localizedObjectAnnotations : undefined
             }
+            faceAnnotations={
+              selectedTab == 4 ? result.faceAnnotations : undefined
+            }
             imageUrl={imageUrl}
+            selectedIndex={selectedIndex}
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -93,6 +98,7 @@ const ResultContainer = ({
                   <ObjectDetectionResultView
                     annotations={result.localizedObjectAnnotations}
                     showTopResult={true}
+                    onIndexSelected={(index) => setSelectedIndex(index)}
                   />
                 ) : null}
               </TabPanel>

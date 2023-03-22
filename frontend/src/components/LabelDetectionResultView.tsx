@@ -53,8 +53,8 @@ export default ({ annotations }: { annotations: Annotation[] }) => {
     <TableContainer component={Paper}>
       <Table>
         <TableBody>
-          {rows.map(({ description, score }) => (
-            <TableRow key={description}>
+          {rows.map(({ description, score }, index) => (
+            <TableRow key={index}>
               <LabelRow label={description} confidence={score} />
             </TableRow>
           ))}
