@@ -19,25 +19,6 @@ import sampleQuery from "mocks/sampleQueryResponse.json";
 
 const client = axios.create({ baseURL: import.meta.env.VITE_API_SERVER });
 
-// export type LabelDetectionResult = {
-//   [key: string]: number;
-// };
-
-// export interface ObjectDetection {
-//   label: string;
-//   confidence: number;
-//   boundingBox: {
-//     x: number;
-//     y: number;
-//     width: number;
-//     height: number;
-//   };
-// }
-
-// export interface ObjectDetectionResult {
-//   objectDetections: ObjectDetection[];
-// }
-
 export interface Color {
   red: number;
   green: number;
@@ -115,9 +96,6 @@ export interface SafeSearchAnnotation {
   racy: number;
 }
 export interface ImageUploadResult {
-  // imageUrl: string;
-  // objectDetectionResult?: ObjectDetectionResult;
-
   faceAnnotations?: FaceAnnotation[];
   landmarkAnnotations?: LandmarkAnnotation[];
   labelAnnotations?: Annotation[];
@@ -131,31 +109,6 @@ export interface ImageUploadResult {
   webDetection?: any;
   logoAnnotations?: any;
 }
-
-// const objectDetectionResult: ObjectDetectionResult = {
-//   objectDetections: [
-//     {
-//       label: "cat",
-//       confidence: 0.92,
-//       boundingBox: {
-//         x: 100,
-//         y: 200,
-//         width: 50,
-//         height: 100,
-//       },
-//     },
-//     {
-//       label: "dog",
-//       confidence: 0.85,
-//       boundingBox: {
-//         x: 300,
-//         y: 150,
-//         width: 70,
-//         height: 70,
-//       },
-//     },
-//   ],
-// };
 
 const ALL_TYPES =
   "CROP_HINTS,DOCUMENT_TEXT_DETECTION,FACE_DETECTION,IMAGE_PROPERTIES,LABEL_DETECTION,LANDMARK_DETECTION,LOGO_DETECTION,OBJECT_LOCALIZATION,PRODUCT_SEARCH,SAFE_SEARCH_DETECTION,TEXT_DETECTION,TYPE_UNSPECIFIED,WEB_DETECTION";

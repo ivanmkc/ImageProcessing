@@ -12,18 +12,14 @@ import {
 import { Color, ImagePropertiesAnnotation } from "queries";
 
 const ColorRow = ({
+  index,
   color,
-  score,
   pixelFraction,
 }: {
+  index: number;
   color: Color;
-  score: number;
   pixelFraction: number;
 }) => {
-  // const confidenceLabel: string =
-  //   CONFIDENCE_LEVELS_MAP[confidence.toString()]["label"];
-  // const confidencePercent: number =
-  //   CONFIDENCE_LEVELS_MAP[confidence.toString()]["confidencePercent"];
   const colorString = `${color.red},${color.green},${color.blue}`;
 
   return (
@@ -33,6 +29,7 @@ const ColorRow = ({
           {`RGB = (${color.red}, ${color.green}, ${color.blue})`}
         </Typography>
         <Typography variant="caption" style={{ alignSelf: "flex-end" }}>
+          {index == 0 ? "Pixel fraction = " : null}
           {(pixelFraction * 100).toFixed(0)}%
         </Typography>
       </div>
@@ -61,8 +58,8 @@ export default ({ annotation }: { annotation: ImagePropertiesAnnotation }) => {
             .map(({ color, score, pixelFraction }, index) => (
               <TableRow key={index}>
                 <ColorRow
+                  index={index}
                   color={color}
-                  score={score}
                   pixelFraction={pixelFraction}
                 />
               </TableRow>

@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useMutation,
+  useQuery,
+} from "react-query";
 import {
   Alert,
   Box,
@@ -46,32 +51,13 @@ const ImageUploadPage = () => {
   const [selectedFile, setFile] = useState<File | null>(null);
   const [imageUrl, setImageSrc] = useState<string>("");
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (files && files.length > 0) {
-      const file = files[0];
-      setFile(file);
-
-      const reader = new FileReader();
-
-      reader.onload = (event) => {
-        if (event.target?.result != null) {
-          setImageSrc(event.target.result as string);
-        }
-      };
-
-      reader.readAsDataURL(file);
-    } else {
-      setFile(null);
-    }
-  };
-
   const {
     isLoading,
     error,
-    refetch,
+    reset,
+    mutate: performUpload,
     data: uploadResult,
-  } = useQuery<ImageUploadResult, Error>(
+  } = useMutation<ImageUploadResult, Error>(
     ["uploadFile", selectedFile],
     () => {
       if (selectedFile != null) {
@@ -79,11 +65,30 @@ const ImageUploadPage = () => {
       } else {
         throw new Error("No file selected for upload");
       }
-    },
-    {
-      enabled: false,
     }
   );
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      const file = files[0];
+      setFile(file);
+
+      // Reset upload results
+      reset();
+
+      // Get the file url and save it to state
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event.target?.result != null) {
+          setImageSrc(event.target.result as string);
+        }
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setFile(null);
+    }
+  };
 
   return (
     <Box sx={{ paddingTop: 8 }}>
@@ -97,7 +102,7 @@ const ImageUploadPage = () => {
             <Button
               variant="contained"
               onClick={() => {
-                refetch();
+                performUpload();
               }}
               disabled={!selectedFile || isLoading}
               sx={{ maxWidth: "200px" }}
