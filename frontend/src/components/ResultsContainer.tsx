@@ -30,9 +30,7 @@ interface TabPanelProps {
   value: number;
 }
 
-const TabPanel = (props: TabPanelProps) => {
-  const { children, value, index } = props;
-
+const TabPanel = ({ children, value, index }: TabPanelProps) => {
   return (
     <div hidden={value !== index}>
       {value === index && <div>{children}</div>}
@@ -47,7 +45,6 @@ const ResultContainer = ({
   imageUrl: string;
   result: ImageUploadResult;
 }) => {
-  console.log("ResultContainer");
   const [selectedTab, setSelectedTab] = useState<number>(0);
   const [selectedIndex, setSelectedIndex] = useState<number>();
 
@@ -80,17 +77,48 @@ const ResultContainer = ({
               <Tab
                 label="Objects"
                 disabled={result.localizedObjectAnnotations == null}
+                sx={{
+                  "&:focus": {
+                    outline: "none",
+                  },
+                }}
               />
-              <Tab label="Labels" disabled={result.labelAnnotations == null} />
+              <Tab
+                label="Labels"
+                disabled={result.labelAnnotations == null}
+                sx={{
+                  "&:focus": {
+                    outline: "none",
+                  },
+                }}
+              />
               <Tab
                 label="Properties"
                 disabled={result.imagePropertiesAnnotation == null}
+                sx={{
+                  "&:focus": {
+                    outline: "none",
+                  },
+                }}
               />
               <Tab
                 label="Safe Search"
                 disabled={result.safeSearchAnnotation == null}
+                sx={{
+                  "&:focus": {
+                    outline: "none",
+                  },
+                }}
               />
-              <Tab label="Faces" disabled={result.faceAnnotations == null} />
+              <Tab
+                label="Faces"
+                disabled={result.faceAnnotations == null}
+                sx={{
+                  "&:focus": {
+                    outline: "none",
+                  },
+                }}
+              />
             </Tabs>
             <Box padding={2}>
               <TabPanel value={selectedTab} index={0}>

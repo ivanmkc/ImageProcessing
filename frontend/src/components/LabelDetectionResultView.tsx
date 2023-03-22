@@ -1,6 +1,4 @@
 import {
-  LinearProgress,
-  TableCell,
   TableContainer,
   Paper,
   Table,

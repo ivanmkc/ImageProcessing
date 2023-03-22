@@ -52,7 +52,6 @@ const ColorRow = ({
 };
 
 export default ({ annotation }: { annotation: ImagePropertiesAnnotation }) => {
-  console.log(annotation);
   return (
     <TableContainer component={Paper}>
       <Table>

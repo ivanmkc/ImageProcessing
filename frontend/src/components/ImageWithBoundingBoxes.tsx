@@ -36,7 +36,6 @@ const BoundingBox = ({
 
   return (
     <Box
-      key={index}
       sx={{
         position: "absolute",
         top: `${percentY * 100}%`,
@@ -78,6 +77,7 @@ const ImageWithBoundingBoxes = ({
 
       return (
         <BoundingBox
+          key={index}
           index={index}
           box={box}
           selectedIndex={selectedIndex}
@@ -92,6 +92,7 @@ const ImageWithBoundingBoxes = ({
 
       return (
         <BoundingBox
+          key={index}
           index={index}
           box={box}
           selectedIndex={selectedIndex}

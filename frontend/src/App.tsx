@@ -7,8 +7,6 @@ import {
   CircularProgress,
   Container,
   Paper,
-  Tab,
-  Tabs,
   TextField,
   Typography,
 } from "@mui/material";
