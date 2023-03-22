@@ -82,6 +82,7 @@ export interface FaceAnnotation {
 }
 
 export interface LocalizedObjectAnnotation {
+  name: string;
   mid: string;
   score: number;
   boundingPoly: Poly;

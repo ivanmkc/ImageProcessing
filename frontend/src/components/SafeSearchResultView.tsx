@@ -16,10 +16,10 @@ const CONFIDENCE_LEVELS_MAP: {
 } = {
   "0": { label: "UNKNOWN", confidencePercent: 0 },
   "1": { label: "VERY UNLIKELY", confidencePercent: 0 },
-  "2": { label: "UNLIKELY", confidencePercent: 1 / 4 },
-  "3": { label: "POSSIBLE", confidencePercent: 2 / 4 },
-  "4": { label: "LIKELY", confidencePercent: 3 / 4 },
-  "5": { label: "VERY LIKELY", confidencePercent: 4 / 4 },
+  "2": { label: "UNLIKELY", confidencePercent: (1 / 4) * 100 },
+  "3": { label: "POSSIBLE", confidencePercent: (2 / 4) * 100 },
+  "4": { label: "LIKELY", confidencePercent: (3 / 4) * 100 },
+  "5": { label: "VERY LIKELY", confidencePercent: (4 / 4) * 100 },
 };
 
 const LabelRow = ({

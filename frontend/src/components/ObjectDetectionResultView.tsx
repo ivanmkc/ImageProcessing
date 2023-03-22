@@ -58,7 +58,6 @@ export default ({
   annotations: LocalizedObjectAnnotation[];
   showTopResult: boolean;
 }) => {
-  console.log(annotations);
   if (annotations.length == 0) {
     return (
       <Alert severity="info">

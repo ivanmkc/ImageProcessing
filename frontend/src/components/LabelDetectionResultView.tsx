@@ -36,6 +36,16 @@ const LabelRow = ({
 };
 
 export default ({ annotations }: { annotations: Annotation[] }) => {
+  if (annotations.length == 0) {
+    return (
+      <Alert severity="info">
+        <Typography variant="body1" sx={{ ml: 2 }}>
+          No labels detected.
+        </Typography>
+      </Alert>
+    );
+  }
+
   // Sort rows by confidence
   const rows = annotations.sort((a, b) => b.score - a.score);
 
