@@ -16,6 +16,16 @@ In the project directory, you can run:
 
 ### Deployment
 
+#### Pre-requisite: Environment variables
+
+1. Deploy the desired backend by following the instructions in the relevant backend folder. Note the URI that the backend is deployed to.
+2. Create a file in this folder (i.e. frontend) called `.env`.
+3. In this file, add the following with the appropriate value for `<BACKEND_URI>`.
+
+```
+VITE_API_SERVER=<BACKEND_URI>
+```
+
 #### Option 1. Build and deploy to Google Cloud Run in one step
 
 ```

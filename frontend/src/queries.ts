@@ -17,7 +17,7 @@
 import axios from "axios";
 import sampleQuery from "mocks/sampleQueryResponse.json";
 
-const client = axios.create({ baseURL: import.meta.env.API_SERVER });
+const client = axios.create({ baseURL: import.meta.env.VITE_API_SERVER });
 
 // export type LabelDetectionResult = {
 //   [key: string]: number;
@@ -83,7 +83,6 @@ export interface FaceAnnotation {
 
 export interface LocalizedObjectAnnotation {
   mid: string;
-  name: string;
   score: number;
   boundingPoly: Poly;
   languageCode: string;
@@ -148,11 +147,11 @@ export interface ImageUploadResult {
 // };
 
 export async function uploadImage(file: File): Promise<ImageUploadResult> {
-  // const formData = new FormData();
-  // formData.append("image", file);
-  // return client
-  //   .post<ImageUploadResult>("/upload-image", formData)
-  //   .then((response) => response.data);
+  const formData = new FormData();
+  formData.append("image", file);
+  return client
+    .post<ImageUploadResult>("/", formData)
+    .then((response) => response.data);
 
-  return Promise.resolve(sampleQuery);
+  // return Promise.resolve(sampleQuery);
 }
