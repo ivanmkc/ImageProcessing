@@ -21,6 +21,7 @@ import ImageWithBoundingBoxes from "components/ImageWithBoundingBoxes";
 import LabelDetectionResultView from "components/LabelDetectionResultView";
 import ObjectDetectionResultView from "components/ObjectDetectionResultView";
 import SafeSearchResultView from "components/SafeSearchResultView";
+import ImagePropertiesResultView from "./ImagePropertiesResultView";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -70,10 +71,19 @@ const ResultContainer = ({
               onChange={handleChange}
               variant="fullWidth"
             >
-              <Tab label="Objects" />
-              <Tab label="Labels" />
-              <Tab label="Properties" />
-              <Tab label="Safe Search" />
+              <Tab
+                label="Objects"
+                disabled={result.localizedObjectAnnotations == null}
+              />
+              <Tab label="Labels" disabled={result.labelAnnotations == null} />
+              <Tab
+                label="Properties"
+                disabled={result.imagePropertiesAnnotation == null}
+              />
+              <Tab
+                label="Safe Search"
+                disabled={result.safeSearchAnnotation == null}
+              />
             </Tabs>
             <Box padding={2}>
               <TabPanel value={selectedTab} index={0}>
@@ -92,7 +102,11 @@ const ResultContainer = ({
                 ) : null}
               </TabPanel>
               <TabPanel value={selectedTab} index={2}>
-                <Typography>TODO: Properties</Typography>
+                {result.imagePropertiesAnnotation != null ? (
+                  <ImagePropertiesResultView
+                    annotation={result.imagePropertiesAnnotation}
+                  />
+                ) : null}
               </TabPanel>
               <TabPanel value={selectedTab} index={3}>
                 {result.safeSearchAnnotation != null ? (

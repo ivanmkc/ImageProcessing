@@ -37,13 +37,21 @@ const client = axios.create({ baseURL: import.meta.env.VITE_API_SERVER });
 // export interface ObjectDetectionResult {
 //   objectDetections: ObjectDetection[];
 // }
-export interface ImagePropertiesAnnotation {}
 
-export interface Vertex {
+export interface Color {
+  red: number;
+  green: number;
+  blue: number;
+}
+export interface ImagePropertiesAnnotation {
+  dominantColors: { color: Color; score: number; pixelFraction: number }[];
+}
+
+interface Vertex {
   x: number;
   y: number;
 }
-export interface Poly {
+interface Poly {
   vertices: Vertex[];
   normalizedVertices: Vertex[]; // What is this?
 }
@@ -58,7 +66,7 @@ export interface Annotation {
   properties: any[]; // What is this?
 }
 
-export interface Landmark {
+interface Landmark {
   type: number;
   position: { x: number; y: number; z: number };
 }
@@ -88,7 +96,7 @@ export interface LocalizedObjectAnnotation {
   boundingPoly: Poly;
   languageCode: string;
 }
-export interface Location {
+interface Location {
   latLng: { latitude: number; longitude: number };
 }
 
