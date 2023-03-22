@@ -10,32 +10,15 @@ import {
   Alert,
 } from "@mui/material";
 import { FaceAnnotation } from "queries";
+import ConfidenceLabelRow from "components/ConfidenceLabelRow";
 
-const LabelRow = ({
-  label,
-  confidence,
+export default ({
+  annotations,
+  onIndexSelected,
 }: {
-  label: string;
-  confidence: number;
+  annotations: FaceAnnotation[];
+  onIndexSelected?: (index?: number) => void;
 }) => {
-  const confidencePercent = confidence * 100;
-
-  return (
-    <TableCell align="right">
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography variant="caption" style={{ alignSelf: "flex-start" }}>
-          {label}
-        </Typography>
-        <Typography variant="caption" style={{ alignSelf: "flex-end" }}>
-          {confidence.toFixed(2)}
-        </Typography>
-      </div>
-      <LinearProgress variant="determinate" value={confidencePercent} />
-    </TableCell>
-  );
-};
-
-export default ({ annotations }: { annotations: FaceAnnotation[] }) => {
   if (annotations.length == 0) {
     return (
       <Alert severity="info">
@@ -46,22 +29,38 @@ export default ({ annotations }: { annotations: FaceAnnotation[] }) => {
     );
   }
 
-  return <Typography>{annotations.length} faces detected</Typography>;
-
   // Sort rows by confidence
-  // const rows = annotations.sort((a, b) => b.score - a.score);
+  const faces = annotations.sort(
+    (a, b) => b.detectionConfidence - a.detectionConfidence
+  );
 
-  // return (
-  //   <TableContainer component={Paper}>
-  //     <Table>
-  //       <TableBody>
-  //         {rows.map(({ description, score }) => (
-  //           <TableRow key={description}>
-  //             <LabelRow label={description} confidence={score} />
-  //           </TableRow>
-  //         ))}
-  //       </TableBody>
-  //     </Table>
-  //   </TableContainer>
-  // );
+  return (
+    <TableContainer component={Paper}>
+      <Table>
+        <TableBody>
+          {faces.map(({ detectionConfidence }, index) => (
+            <TableRow
+              key={index}
+              onMouseEnter={() => {
+                if (onIndexSelected) {
+                  onIndexSelected(index);
+                }
+              }}
+              onMouseLeave={() => {
+                if (onIndexSelected) {
+                  onIndexSelected(undefined);
+                }
+              }}
+            >
+              <ConfidenceLabelRow
+                index={index}
+                label={`Face ${index + 1}`}
+                confidence={detectionConfidence}
+              />
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
 };

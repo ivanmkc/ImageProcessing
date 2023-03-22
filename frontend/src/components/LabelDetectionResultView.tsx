@@ -10,30 +10,7 @@ import {
   Alert,
 } from "@mui/material";
 import { Annotation } from "queries";
-
-const LabelRow = ({
-  label,
-  confidence,
-}: {
-  label: string;
-  confidence: number;
-}) => {
-  const confidencePercent = confidence * 100;
-
-  return (
-    <TableCell align="right">
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography variant="caption" style={{ alignSelf: "flex-start" }}>
-          {label}
-        </Typography>
-        <Typography variant="caption" style={{ alignSelf: "flex-end" }}>
-          {confidence.toFixed(2)}
-        </Typography>
-      </div>
-      <LinearProgress variant="determinate" value={confidencePercent} />
-    </TableCell>
-  );
-};
+import ConfidenceLabelRow from "components/ConfidenceLabelRow";
 
 export default ({ annotations }: { annotations: Annotation[] }) => {
   if (annotations.length == 0) {
@@ -55,7 +32,11 @@ export default ({ annotations }: { annotations: Annotation[] }) => {
         <TableBody>
           {rows.map(({ description, score }, index) => (
             <TableRow key={index}>
-              <LabelRow label={description} confidence={score} />
+              <ConfidenceLabelRow
+                index={index}
+                label={description}
+                confidence={score}
+              />
             </TableRow>
           ))}
         </TableBody>

@@ -127,6 +127,7 @@ const ResultContainer = ({
                 {result.faceAnnotations != null ? (
                   <FaceAnnotationsResultView
                     annotations={result.faceAnnotations}
+                    onIndexSelected={(index) => setSelectedIndex(index)}
                   />
                 ) : null}
               </TabPanel>
