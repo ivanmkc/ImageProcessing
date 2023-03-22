@@ -19,7 +19,7 @@ In the project directory, you can run:
 #### Pre-requisite: Environment variables
 
 1. Deploy the desired backend by following the instructions in the relevant backend folder. Note the URI that the backend is deployed to.
-2. Create a file in this folder (i.e. frontend) called `.env`.
+2. Create a file in this folder (i.e. frontend) called `.env.production`.
 3. In this file, add the following with the appropriate value for `<BACKEND_URI>`.
 
 ```
