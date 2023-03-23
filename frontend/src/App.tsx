@@ -21,7 +21,7 @@ import {
 import {
   annotateImageByFile,
   annotateImageByUri,
-  ImageUploadResult as ImageAnnotationResult,
+  ImageAnnotationResult,
 } from "queries";
 import { Stack } from "@mui/system";
 import ResultContainer from "components/ResultsContainer";
@@ -89,6 +89,7 @@ const AnnotateByUri = ({
 
 const ImageAnnotationPage = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  // The URL to the image to be displayed
   const [selectedFileUrl, setSelectedFileURL] = useState<string>("");
   const [imageUri, setImageUri] = useState<string>("");
   const [imageSource, setImageSource] = useState<ImageSource>(
@@ -143,22 +144,13 @@ const ImageAnnotationPage = () => {
     setImageSource(ImageSource[imageSource as keyof typeof ImageSource]);
   };
 
-  let isLoading: boolean = false;
-  let error: Error | null = null;
-  let imageURL: string | null = null;
-  let annotationResult: ImageAnnotationResult | undefined = undefined;
-
-  if (imageSource == ImageSource.Upload) {
-    isLoading = annotateImageByFileMutation.isLoading;
-    error = annotateImageByFileMutation.error;
-    imageURL = selectedFileUrl;
-    annotationResult = annotateImageByFileMutation.data;
-  } else if (imageSource == ImageSource.URL) {
-    error = annotateImageByUriMutation.error;
-    isLoading = annotateImageByUriMutation.isLoading;
-    imageURL = imageUri;
-    annotationResult = annotateImageByUriMutation.data;
-  }
+  let isLoading: boolean =
+    annotateImageByFileMutation.isLoading ||
+    annotateImageByUriMutation.isLoading;
+  let error: Error | null =
+    annotateImageByFileMutation.error || annotateImageByUriMutation.error;
+  let annotationResult: ImageAnnotationResult | undefined =
+    annotateImageByFileMutation.data || annotateImageByUriMutation.data;
 
   return (
     <Box sx={{ paddingTop: 8 }}>
@@ -217,6 +209,7 @@ const ImageAnnotationPage = () => {
                     if (imageUri != null) {
                       annotateImageByFileMutation.reset();
                       annotateImageByUriMutation.reset();
+                      setSelectedFileURL(imageUri);
                       annotateImageByUriMutation.mutate(imageUri);
                     }
                   }}
@@ -230,9 +223,9 @@ const ImageAnnotationPage = () => {
                 <Typography variant="h5">Results</Typography>
                 {error && <ErrorAlert error={error} />}
                 {isLoading && <LoadingAlert />}
-                {annotationResult != null && imageURL != null ? (
+                {annotationResult != null && selectedFileUrl != null ? (
                   <ResultContainer
-                    imageUrl={imageURL}
+                    imageUrl={selectedFileUrl}
                     result={annotationResult}
                   />
                 ) : null}
