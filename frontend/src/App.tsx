@@ -85,9 +85,7 @@ const AnnotateByUri = ({
 const ImageUploadPage = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [selectedFileURL, setSelectedFileURL] = useState<string>();
-  const [imageUri, setImageUri] = useState<string>(
-    "https://cdn.arstechnica.net/wp-content/uploads/2023/03/GettyImages-865691398-800x533.jpg"
-  );
+  const [imageUri, setImageUri] = useState<string>("");
   const [imageSource, setImageSource] = useState<ImageSource>(
     ImageSource.Upload
   );
