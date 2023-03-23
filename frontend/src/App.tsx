@@ -21,7 +21,7 @@ import {
 import {
   annotateImageByFile,
   annotateImageByUri,
-  ImageUploadResult,
+  ImageUploadResult as ImageAnnotationResult,
 } from "queries";
 import { Stack } from "@mui/system";
 import ResultContainer from "components/ResultsContainer";
@@ -65,6 +65,11 @@ const AnnotateByUri = ({
             onImageUriChanged(event.target.value);
           }}
           fullWidth
+          onKeyUp={(event) => {
+            if (event.key === "Enter" && onConfirmClicked != null) {
+              onConfirmClicked();
+            }
+          }}
         />
       </Box>
       <Button
@@ -82,16 +87,16 @@ const AnnotateByUri = ({
   );
 };
 
-const ImageUploadPage = () => {
+const ImageAnnotationPage = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [selectedFileURL, setSelectedFileURL] = useState<string>();
+  const [selectedFileUrl, setSelectedFileURL] = useState<string>("");
   const [imageUri, setImageUri] = useState<string>("");
   const [imageSource, setImageSource] = useState<ImageSource>(
     ImageSource.Upload
   );
 
   const annotateImageByFileMutation = useMutation<
-    ImageUploadResult,
+    ImageAnnotationResult,
     Error,
     File
   >(["uploadFile", selectedFile], (file: File) => {
@@ -99,7 +104,7 @@ const ImageUploadPage = () => {
   });
 
   const annotateImageByUriMutation = useMutation<
-    ImageUploadResult,
+    ImageAnnotationResult,
     Error,
     string
   >(["uploadFile", selectedFile], (imageUri: string) => {
@@ -138,14 +143,22 @@ const ImageUploadPage = () => {
     setImageSource(ImageSource[imageSource as keyof typeof ImageSource]);
   };
 
-  const isLoading =
-    annotateImageByFileMutation.isLoading ||
-    annotateImageByUriMutation.isLoading;
-  const error =
-    annotateImageByFileMutation.error || annotateImageByUriMutation.error;
-  const annotationResult =
-    annotateImageByFileMutation.data || annotateImageByUriMutation.data;
-  const imageURL = selectedFileURL || imageUri;
+  let isLoading: boolean = false;
+  let error: Error | null = null;
+  let imageURL: string | null = null;
+  let annotationResult: ImageAnnotationResult | undefined = undefined;
+
+  if (imageSource == ImageSource.Upload) {
+    isLoading = annotateImageByFileMutation.isLoading;
+    error = annotateImageByFileMutation.error;
+    imageURL = selectedFileUrl;
+    annotationResult = annotateImageByFileMutation.data;
+  } else if (imageSource == ImageSource.URL) {
+    error = annotateImageByUriMutation.error;
+    isLoading = annotateImageByUriMutation.isLoading;
+    imageURL = imageUri;
+    annotationResult = annotateImageByUriMutation.data;
+  }
 
   return (
     <Box sx={{ paddingTop: 8 }}>
@@ -237,7 +250,7 @@ const queryClient = new QueryClient();
 export default () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <ImageUploadPage />
+      <ImageAnnotationPage />
     </QueryClientProvider>
   );
 };

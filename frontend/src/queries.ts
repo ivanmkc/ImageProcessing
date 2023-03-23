@@ -95,7 +95,7 @@ export interface SafeSearchAnnotation {
   violence: number;
   racy: number;
 }
-export interface ImageUploadResult {
+export interface ImageAnnotationResult {
   faceAnnotations?: FaceAnnotation[];
   landmarkAnnotations?: LandmarkAnnotation[];
   labelAnnotations?: Annotation[];
@@ -108,6 +108,8 @@ export interface ImageUploadResult {
   fullTextAnnotation?: any;
   webDetection?: any;
   logoAnnotations?: any;
+
+  error?: string;
 }
 
 const ALL_TYPES =
@@ -118,7 +120,7 @@ const LIMITED_TYPES =
 
 export async function annotateImageByFile(
   file: File
-): Promise<ImageUploadResult> {
+): Promise<ImageAnnotationResult> {
   const formData = new FormData();
   formData.append("image", file);
   formData.append(
@@ -126,17 +128,17 @@ export async function annotateImageByFile(
     "FACE_DETECTION,IMAGE_PROPERTIES,LABEL_DETECTION,OBJECT_LOCALIZATION,SAFE_SEARCH_DETECTION"
   );
   return client
-    .post<ImageUploadResult>("/", formData)
+    .post<ImageAnnotationResult>("/", formData)
     .then((response) => response.data);
 }
 
 export async function annotateImageByUri(
   imageUri: string
-): Promise<ImageUploadResult> {
+): Promise<ImageAnnotationResult> {
   const formData = new FormData();
   formData.append("image_uri", imageUri);
   formData.append("features", LIMITED_TYPES);
   return client
-    .post<ImageUploadResult>("/", formData)
+    .post<ImageAnnotationResult>("/", formData)
     .then((response) => response.data);
 }
