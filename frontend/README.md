@@ -45,7 +45,7 @@ This uses the Dockerfile to build the frontend container and save it in the Goog
 This can then be deployed to Cloud Run using the following command:
 
 ```
-gcloud beta run deploy image-processing-frontend --image gcr.io/your-project-name/image-processing-frontend --region=us-central1 --platform=managed --cpu=2 --memory=8G --timeout=3600 --allow-unauthenticated --min-instances=0
+gcloud run deploy image-processing-frontend --image gcr.io/your-project-name/image-processing-frontend --region=us-central1 --platform=managed --cpu=2 --memory=8G --timeout=3600 --allow-unauthenticated --min-instances=0
 ```
 
 See [Deploy a Python service to Cloud Run](https://cloud.google.com/run/docs/quickstarts/build-and-deploy/deploy-python-service) for more information.

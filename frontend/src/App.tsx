@@ -48,7 +48,7 @@ const LoadingAlert = () => (
 );
 
 const ImageUploadPage = () => {
-  const [selectedFile, setFile] = useState<File | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imageUrl, setImageSrc] = useState<string>("");
 
   const {
@@ -57,11 +57,11 @@ const ImageUploadPage = () => {
     reset,
     mutate: performUpload,
     data: uploadResult,
-  } = useMutation<ImageUploadResult, Error>(
+  } = useMutation<ImageUploadResult, Error, File>(
     ["uploadFile", selectedFile],
-    () => {
-      if (selectedFile != null) {
-        return uploadImage(selectedFile);
+    (file: File) => {
+      if (file != null) {
+        return uploadImage(file);
       } else {
         throw new Error("No file selected for upload");
       }
@@ -72,7 +72,7 @@ const ImageUploadPage = () => {
     const files = event.target.files;
     if (files && files.length > 0) {
       const file = files[0];
-      setFile(file);
+      setSelectedFile(file);
 
       // Reset upload results
       reset();
@@ -85,8 +85,10 @@ const ImageUploadPage = () => {
         }
       };
       reader.readAsDataURL(file);
+
+      performUpload(file);
     } else {
-      setFile(null);
+      setSelectedFile(null);
     }
   };
 
@@ -99,7 +101,7 @@ const ImageUploadPage = () => {
           </Typography>
           <Stack spacing={2}>
             <TextField type="file" onChange={handleFileChange} />
-            <Button
+            {/* <Button
               variant="contained"
               onClick={() => {
                 performUpload();
@@ -108,7 +110,7 @@ const ImageUploadPage = () => {
               sx={{ maxWidth: "200px" }}
             >
               Upload
-            </Button>
+            </Button> */}
             {selectedFile ? (
               <>
                 {error && <ErrorAlert error={error} />}
