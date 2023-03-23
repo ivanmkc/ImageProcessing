@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 import {
   annotateImageByFile,
-  annotateImageByURI,
+  annotateImageByUri,
   ImageUploadResult,
 } from "queries";
 import { Stack } from "@mui/system";
@@ -43,10 +43,49 @@ enum ImageSource {
   URL,
 }
 
+const AnnotateByUri = ({
+  imageUri,
+  isButtonDisabled,
+  onImageUriChanged,
+  onConfirmClicked,
+}: {
+  imageUri: string;
+  isButtonDisabled: boolean;
+  onImageUriChanged: (text: string) => void;
+  onConfirmClicked?: () => void;
+}) => {
+  return (
+    <>
+      <Box sx={{ flex: 1 }}>
+        <Typography variant="subtitle2">Paste an image URL</Typography>
+        <TextField
+          id="outlined-controlled"
+          value={imageUri}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            onImageUriChanged(event.target.value);
+          }}
+          fullWidth
+        />
+      </Box>
+      <Button
+        variant="contained"
+        onClick={() => {
+          if (onConfirmClicked != null) {
+            onConfirmClicked();
+          }
+        }}
+        disabled={isButtonDisabled}
+      >
+        Annotate
+      </Button>
+    </>
+  );
+};
+
 const ImageUploadPage = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [selectedFileURL, setSelectedFileURL] = useState<string>();
-  const [imageURI, setImageURI] = useState<string>(
+  const [imageUri, setImageUri] = useState<string>(
     "https://cdn.arstechnica.net/wp-content/uploads/2023/03/GettyImages-865691398-800x533.jpg"
   );
   const [imageSource, setImageSource] = useState<ImageSource>(
@@ -61,12 +100,12 @@ const ImageUploadPage = () => {
     return annotateImageByFile(file);
   });
 
-  const annotateImageByURIMutation = useMutation<
+  const annotateImageByUriMutation = useMutation<
     ImageUploadResult,
     Error,
     string
-  >(["uploadFile", selectedFile], (imageURI: string) => {
-    return annotateImageByURI(imageURI);
+  >(["uploadFile", selectedFile], (imageUri: string) => {
+    return annotateImageByUri(imageUri);
   });
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,7 +116,7 @@ const ImageUploadPage = () => {
 
       // Reset upload results
       annotateImageByFileMutation.reset();
-      annotateImageByURIMutation.reset();
+      annotateImageByUriMutation.reset();
 
       // Get the file url and save it to state
       const reader = new FileReader();
@@ -103,12 +142,12 @@ const ImageUploadPage = () => {
 
   const isLoading =
     annotateImageByFileMutation.isLoading ||
-    annotateImageByURIMutation.isLoading;
+    annotateImageByUriMutation.isLoading;
   const error =
-    annotateImageByFileMutation.error || annotateImageByURIMutation.error;
+    annotateImageByFileMutation.error || annotateImageByUriMutation.error;
   const annotationResult =
-    annotateImageByFileMutation.data || annotateImageByURIMutation.data;
-  const imageURL = selectedFileURL || imageURI;
+    annotateImageByFileMutation.data || annotateImageByUriMutation.data;
+  const imageURL = selectedFileURL || imageUri;
 
   return (
     <Box sx={{ paddingTop: 8 }}>
@@ -136,7 +175,7 @@ const ImageUploadPage = () => {
                     },
                   }}
                 >
-                  <Typography variant="overline">Upload file</Typography>
+                  <Typography variant="overline">File upload</Typography>
                 </ToggleButton>
                 <ToggleButton
                   value="ImageUrl"
@@ -150,41 +189,27 @@ const ImageUploadPage = () => {
                 </ToggleButton>
               </ToggleButtonGroup>
               {imageSource == ImageSource.Upload ? (
-                <Box>
+                <Box sx={{ flex: 1 }}>
                   <Typography variant="subtitle2">Choose a file</Typography>
-                  <TextField type="file" onChange={handleFileChange} />
+                  <TextField
+                    type="file"
+                    onChange={handleFileChange}
+                    fullWidth
+                  />
                 </Box>
               ) : (
-                <>
-                  <Box>
-                    <Typography variant="subtitle2">
-                      Paste an image URL
-                    </Typography>
-                    <TextField
-                      id="outlined-controlled"
-                      value={imageURI}
-                      onChange={(
-                        event: React.ChangeEvent<HTMLInputElement>
-                      ) => {
-                        setImageURI(event.target.value);
-                      }}
-                    />
-                  </Box>
-                  <Button
-                    variant="contained"
-                    onClick={() => {
-                      if (imageURI != null) {
-                        annotateImageByFileMutation.reset();
-                        annotateImageByURIMutation.reset();
-                        annotateImageByURIMutation.mutate(imageURI);
-                      }
-                    }}
-                    disabled={imageURI.length == 0 || isLoading}
-                    sx={{ maxWidth: "200px" }}
-                  >
-                    Annotate
-                  </Button>
-                </>
+                <AnnotateByUri
+                  imageUri={imageUri}
+                  onImageUriChanged={(text) => setImageUri(text)}
+                  isButtonDisabled={imageUri.length == 0 || isLoading}
+                  onConfirmClicked={() => {
+                    if (imageUri != null) {
+                      annotateImageByFileMutation.reset();
+                      annotateImageByUriMutation.reset();
+                      annotateImageByUriMutation.mutate(imageUri);
+                    }
+                  }}
+                />
               )}
             </Stack>
 

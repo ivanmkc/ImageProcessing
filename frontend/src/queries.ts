@@ -130,11 +130,11 @@ export async function annotateImageByFile(
     .then((response) => response.data);
 }
 
-export async function annotateImageByURI(
-  imageURI: string
+export async function annotateImageByUri(
+  imageUri: string
 ): Promise<ImageUploadResult> {
   const formData = new FormData();
-  formData.append("image_uri", imageURI);
+  formData.append("image_uri", imageUri);
   formData.append("features", LIMITED_TYPES);
   return client
     .post<ImageUploadResult>("/", formData)
