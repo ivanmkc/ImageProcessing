@@ -8,12 +8,10 @@ import {
 import {
   Alert,
   Box,
-  Button,
   CircularProgress,
   Container,
   Divider,
   Paper,
-  TextField,
   ToggleButton,
   ToggleButtonGroup,
   Typography,
@@ -25,6 +23,10 @@ import {
 } from "queries";
 import { Stack } from "@mui/system";
 import ResultContainer from "components/ResultsContainer";
+import {
+  ImageSource,
+  UnifiedImageSelector,
+} from "components/UnifiedImageSelector";
 
 const ErrorAlert = ({ error }: { error: Error }) => (
   <Alert severity="error">Error: {error.message}</Alert>
@@ -38,69 +40,20 @@ const LoadingAlert = () => (
   </Alert>
 );
 
-enum ImageSource {
-  Upload,
-  URL,
-}
-
-const AnnotateByUri = ({
-  imageUri,
-  isButtonDisabled,
-  onImageUriChanged,
-  onConfirmClicked,
-}: {
-  imageUri: string;
-  isButtonDisabled: boolean;
-  onImageUriChanged: (text: string) => void;
-  onConfirmClicked?: () => void;
-}) => {
-  return (
-    <>
-      <Box sx={{ flex: 1 }}>
-        <Typography variant="subtitle2">Paste an image URL</Typography>
-        <TextField
-          id="outlined-controlled"
-          value={imageUri}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            onImageUriChanged(event.target.value);
-          }}
-          fullWidth
-          onKeyUp={(event) => {
-            if (event.key === "Enter" && onConfirmClicked != null) {
-              onConfirmClicked();
-            }
-          }}
-        />
-      </Box>
-      <Button
-        variant="contained"
-        onClick={() => {
-          if (onConfirmClicked != null) {
-            onConfirmClicked();
-          }
-        }}
-        disabled={isButtonDisabled}
-      >
-        Annotate
-      </Button>
-    </>
-  );
-};
-
 const ImageAnnotationPage = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   // The URL to the image to be displayed
   const [selectedFileUrl, setSelectedFileURL] = useState<string>("");
-  const [imageUri, setImageUri] = useState<string>("");
   const [imageSource, setImageSource] = useState<ImageSource>(
     ImageSource.Upload
   );
+  const [gcsUri, setGCSUri] = useState<string>("");
 
   const annotateImageByFileMutation = useMutation<
     ImageAnnotationResult,
     Error,
     File
-  >(["uploadFile", selectedFile], (file: File) => {
+  >(["annotateImageByFile", selectedFile], (file: File) => {
     return annotateImageByFile(file);
   });
 
@@ -108,14 +61,12 @@ const ImageAnnotationPage = () => {
     ImageAnnotationResult,
     Error,
     string
-  >(["uploadFile", selectedFile], (imageUri: string) => {
+  >(["annotateImageByUri", selectedFile], (imageUri: string) => {
     return annotateImageByUri(imageUri);
   });
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (files && files.length > 0) {
-      const file = files[0];
+  const handleFileChange = (file: File | null) => {
+    if (file != null) {
       setSelectedFile(file);
 
       // Reset upload results
@@ -135,6 +86,13 @@ const ImageAnnotationPage = () => {
     } else {
       setSelectedFile(null);
     }
+  };
+
+  const handleAnnotateByUri = (uri: string) => {
+    annotateImageByFileMutation.reset();
+    annotateImageByUriMutation.reset();
+    setSelectedFileURL(uri);
+    annotateImageByUriMutation.mutate(uri);
   };
 
   const handleImageSourceChange = (
@@ -181,7 +139,7 @@ const ImageAnnotationPage = () => {
                   <Typography variant="overline">File upload</Typography>
                 </ToggleButton>
                 <ToggleButton
-                  value="ImageUrl"
+                  value="URL"
                   sx={{
                     "&:focus": {
                       outline: "none",
@@ -190,31 +148,24 @@ const ImageAnnotationPage = () => {
                 >
                   <Typography variant="overline">Image URL</Typography>
                 </ToggleButton>
-              </ToggleButtonGroup>
-              {imageSource == ImageSource.Upload ? (
-                <Box sx={{ flex: 1 }}>
-                  <Typography variant="subtitle2">Choose a file</Typography>
-                  <TextField
-                    type="file"
-                    onChange={handleFileChange}
-                    fullWidth
-                  />
-                </Box>
-              ) : (
-                <AnnotateByUri
-                  imageUri={imageUri}
-                  onImageUriChanged={(text) => setImageUri(text)}
-                  isButtonDisabled={imageUri.length == 0 || isLoading}
-                  onConfirmClicked={() => {
-                    if (imageUri != null) {
-                      annotateImageByFileMutation.reset();
-                      annotateImageByUriMutation.reset();
-                      setSelectedFileURL(imageUri);
-                      annotateImageByUriMutation.mutate(imageUri);
-                    }
+                <ToggleButton
+                  value="CloudStorage"
+                  sx={{
+                    "&:focus": {
+                      outline: "none",
+                    },
                   }}
-                />
-              )}
+                >
+                  <Typography variant="overline">Cloud Storage</Typography>
+                </ToggleButton>
+              </ToggleButtonGroup>
+              <UnifiedImageSelector
+                isLoading={isLoading}
+                imageSource={imageSource}
+                handleFileChange={handleFileChange}
+                handleAnnotateByUri={handleAnnotateByUri}
+                handleAnnotateByGcsUri={() => {}}
+              />
             </Stack>
 
             {error || isLoading || annotationResult ? (

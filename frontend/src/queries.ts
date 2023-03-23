@@ -142,3 +142,11 @@ export async function annotateImageByUri(
     .post<ImageAnnotationResult>("/", formData)
     .then((response) => response.data);
 }
+
+export async function listGCSFolder(gcsUri: string): Promise<string[]> {
+  const formData = new FormData();
+  formData.append("gcs_uri", gcsUri);
+  return client
+    .post<string[]>("/listGCSFolder", formData)
+    .then((response) => response.data);
+}
