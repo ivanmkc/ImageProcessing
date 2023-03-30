@@ -119,34 +119,42 @@ const LIMITED_TYPES =
   "FACE_DETECTION,IMAGE_PROPERTIES,LABEL_DETECTION,OBJECT_LOCALIZATION,SAFE_SEARCH_DETECTION";
 
 export async function annotateImageByFile(
-  file: File
+  file: File,
+  features: string[]
 ): Promise<ImageAnnotationResult> {
   const formData = new FormData();
   formData.append("image", file);
-  formData.append(
-    "features",
-    "FACE_DETECTION,IMAGE_PROPERTIES,LABEL_DETECTION,OBJECT_LOCALIZATION,SAFE_SEARCH_DETECTION"
-  );
+  formData.append("features", features.join(","));
   return client
     .post<ImageAnnotationResult>("/", formData)
     .then((response) => response.data);
 }
 
 export async function annotateImageByUri(
-  imageUri: string
+  imageUri: string,
+  features: string[]
 ): Promise<ImageAnnotationResult> {
   const formData = new FormData();
   formData.append("image_uri", imageUri);
-  formData.append("features", LIMITED_TYPES);
+  formData.append("features", features.join(","));
   return client
     .post<ImageAnnotationResult>("/", formData)
     .then((response) => response.data);
 }
 
-export async function listGCSFolder(gcsUri: string): Promise<string[]> {
+const display_client = axios.create({
+  baseURL: "https://display-gcs-http-x4vr3lywrq-wn.a.run.app",
+});
+
+export async function listGCSFolder(
+  start?: number,
+  end?: number
+): Promise<{ [key: string]: { name: string; content: any[] } }[]> {
   const formData = new FormData();
-  formData.append("gcs_uri", gcsUri);
-  return client
-    .post<string[]>("/listGCSFolder", formData)
+
+  return display_client
+    .get<{ [key: string]: { name: string; content: any[] } }[]>("/?get_list", {
+      params: { start, end },
+    })
     .then((response) => response.data);
 }

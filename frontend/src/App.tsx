@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   QueryClient,
   QueryClientProvider,
@@ -27,6 +27,9 @@ import {
   ImageSource,
   UnifiedImageSelector,
 } from "components/UnifiedImageSelector";
+import FeatureToggleSelection from "components/FeatureToggleSelection";
+import { blueGrey, grey } from "@mui/material/colors";
+import ImageSourceToggleSelection from "components/ImageSourceToggleSelection";
 
 const ErrorAlert = ({ error }: { error: Error }) => (
   <Alert severity="error">Error: {error.message}</Alert>
@@ -44,6 +47,7 @@ const ImageAnnotationPage = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   // The URL to the image to be displayed
   const [selectedFileUrl, setSelectedFileURL] = useState<string>("");
+  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
   const [imageSource, setImageSource] = useState<ImageSource>(
     ImageSource.Upload
   );
@@ -54,7 +58,7 @@ const ImageAnnotationPage = () => {
     Error,
     File
   >(["annotateImageByFile", selectedFile], (file: File) => {
-    return annotateImageByFile(file);
+    return annotateImageByFile(file, selectedFeatures);
   });
 
   const annotateImageByUriMutation = useMutation<
@@ -62,10 +66,11 @@ const ImageAnnotationPage = () => {
     Error,
     string
   >(["annotateImageByUri", selectedFile], (imageUri: string) => {
-    return annotateImageByUri(imageUri);
+    return annotateImageByUri(imageUri, selectedFeatures);
   });
 
   const handleFileChange = (file: File | null) => {
+    console.log("handleFileChange");
     if (file != null) {
       setSelectedFile(file);
 
@@ -88,18 +93,30 @@ const ImageAnnotationPage = () => {
     }
   };
 
+  useEffect(() => {
+    console.log("selectedFeatures changed");
+    switch (imageSource) {
+      case ImageSource.Upload:
+        handleFileChange(selectedFile);
+        break;
+      case ImageSource.URL:
+        handleAnnotateByUri(selectedFileUrl);
+        break;
+      case ImageSource.CloudStorage:
+        break;
+    }
+  }, [selectedFeatures]);
+
   const handleAnnotateByUri = (uri: string) => {
+    console.log("handleAnnotateByUri");
+
     annotateImageByFileMutation.reset();
     annotateImageByUriMutation.reset();
     setSelectedFileURL(uri);
     annotateImageByUriMutation.mutate(uri);
   };
-
-  const handleImageSourceChange = (
-    event: React.MouseEvent<HTMLElement>,
-    imageSource: string
-  ) => {
-    setImageSource(ImageSource[imageSource as keyof typeof ImageSource]);
+  const handleImageSourceChange = (imageSource: ImageSource) => {
+    setImageSource(imageSource);
   };
 
   let isLoading: boolean =
@@ -118,55 +135,35 @@ const ImageAnnotationPage = () => {
             Annotate Image
           </Typography>
           <Stack spacing={2}>
-            <Stack direction="row" spacing={4} height={80}>
-              <ToggleButtonGroup
-                orientation="horizontal"
-                value={imageSource}
-                exclusive
-                onChange={handleImageSourceChange}
-              >
-                <ToggleButton
-                  value="Upload"
-                  sx={{
-                    "&:focus": {
-                      outline: "none",
-                    },
-                    "&:hover": {
-                      outline: "none",
-                    },
-                  }}
-                >
-                  <Typography variant="overline">File upload</Typography>
-                </ToggleButton>
-                <ToggleButton
-                  value="URL"
-                  sx={{
-                    "&:focus": {
-                      outline: "none",
-                    },
-                  }}
-                >
-                  <Typography variant="overline">Image URL</Typography>
-                </ToggleButton>
-                <ToggleButton
-                  value="CloudStorage"
-                  sx={{
-                    "&:focus": {
-                      outline: "none",
-                    },
-                  }}
-                >
-                  <Typography variant="overline">Cloud Storage</Typography>
-                </ToggleButton>
-              </ToggleButtonGroup>
-              <UnifiedImageSelector
-                isLoading={isLoading}
-                imageSource={imageSource}
-                handleFileChange={handleFileChange}
-                handleAnnotateByUri={handleAnnotateByUri}
-                handleAnnotateByGcsUri={() => {}}
+            <Box sx={{ borderLeft: 4, padding: 2, borderColor: blueGrey[200] }}>
+              <Typography variant="subtitle1">Image source</Typography>
+              <Typography variant="subtitle2">
+                Choose the image you want to annotate
+              </Typography>
+              <Stack direction="row" spacing={4} height={80}>
+                <ImageSourceToggleSelection
+                  onChange={handleImageSourceChange}
+                />
+                <UnifiedImageSelector
+                  isLoading={isLoading}
+                  imageSource={imageSource}
+                  handleFileChange={handleFileChange}
+                  handleAnnotateByUri={handleAnnotateByUri}
+                  handleAnnotateByGcsUri={() => {}}
+                />
+              </Stack>
+            </Box>
+            <Box sx={{ borderLeft: 4, padding: 2, borderColor: blueGrey[200] }}>
+              <Typography variant="subtitle1">Features</Typography>
+              <Typography variant="subtitle2">
+                Choose the image features you want to detect
+              </Typography>{" "}
+              <FeatureToggleSelection
+                onChange={(features) => {
+                  setSelectedFeatures(features);
+                }}
               />
-            </Stack>
+            </Box>
 
             {error || isLoading || annotationResult ? (
               <>

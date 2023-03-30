@@ -1,5 +1,6 @@
 import { Box, Typography, TextField, Button } from "@mui/material";
 import { listGCSFolder } from "queries";
+import { useEffect } from "react";
 import { useMutation } from "react-query";
 
 export default ({
@@ -13,17 +14,24 @@ export default ({
   onUriChanged: (text: string) => void;
   onConfirmClicked?: () => void;
 }) => {
-  const listGCSFolderMutation = useMutation<string[], Error, string>(
-    ["listGCSFolderMutation", gcsUri],
-    (uri: string) => {
-      return listGCSFolder(uri);
-    }
-  );
+  const listGCSFolderMutation = useMutation<
+    { [key: string]: { name: string; content: any[] } }[],
+    Error
+  >(["listGCSFolderMutation", gcsUri], () => {
+    return listGCSFolder();
+  });
+
+  useEffect(() => {
+    listGCSFolderMutation.mutate();
+  }, []);
 
   return (
     <>
       <Box sx={{ flex: 1 }}>
-        <Typography variant="subtitle2">TODO: Paste a GCS URI</Typography>
+        {/* {listGCSFolderMutation.data?.map((imageInfo) => {
+          <Typography>{imageInfo}</Typography>;
+        })} */}
+        <Typography variant="subtitle2">TODO:Paste a GCS URI</Typography>
         <TextField
           id="outlined-controlled"
           value={gcsUri}
@@ -34,7 +42,7 @@ export default ({
           onKeyUp={(event) => {
             // if (event.key === "Enter" && onConfirmClicked != null) {
             //   onConfirmClicked();
-            listGCSFolderMutation.mutate(gcsUri);
+            listGCSFolderMutation.mutate();
             // }
           }}
         />
