@@ -34,7 +34,6 @@ const FeatureSelector = ({ onChange }: Props) => {
     <ToggleButtonGroup
       value={selectedFeatures}
       onChange={handleFeatureSelection}
-      aria-label="feature selection"
     >
       {Object.entries(FEATURE_TO_LABEL_MAP).map(([feature, label]) => (
         <ToggleButton key={feature} value={feature} aria-label={label}>

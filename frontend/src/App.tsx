@@ -17,8 +17,11 @@ import {
   Typography,
 } from "@mui/material";
 import {
+  annotateImageByCloudImageInfo,
   annotateImageByFile,
   annotateImageByUri,
+  CloudImageInfo,
+  getImageDataURL,
   ImageAnnotationResult,
 } from "queries";
 import { Stack } from "@mui/system";
@@ -51,7 +54,11 @@ const ImageAnnotationPage = () => {
   const [imageSource, setImageSource] = useState<ImageSource>(
     ImageSource.Upload
   );
-  const [gcsUri, setGCSUri] = useState<string>("");
+
+  // Fetch info on init
+  useEffect(() => {
+    console.log("ImageAnnotationPage init");
+  }, []);
 
   const annotateImageByFileMutation = useMutation<
     ImageAnnotationResult,
@@ -65,8 +72,16 @@ const ImageAnnotationPage = () => {
     ImageAnnotationResult,
     Error,
     string
-  >(["annotateImageByUri", selectedFile], (imageUri: string) => {
+  >(["annotateImageByUri", selectedFileUrl], (imageUri: string) => {
     return annotateImageByUri(imageUri, selectedFeatures);
+  });
+
+  const annotateImageByCloudImageMutation = useMutation<
+    ImageAnnotationResult,
+    Error,
+    CloudImageInfo
+  >(["annotateImageByCloudImage"], (info: CloudImageInfo) => {
+    return annotateImageByCloudImageInfo(info);
   });
 
   const handleFileChange = (file: File | null) => {
@@ -77,6 +92,7 @@ const ImageAnnotationPage = () => {
       // Reset upload results
       annotateImageByFileMutation.reset();
       annotateImageByUriMutation.reset();
+      annotateImageByCloudImageMutation.reset();
 
       // Get the file url and save it to state
       const reader = new FileReader();
@@ -88,6 +104,38 @@ const ImageAnnotationPage = () => {
       reader.readAsDataURL(file);
 
       annotateImageByFileMutation.mutate(file);
+    } else {
+      setSelectedFile(null);
+    }
+  };
+
+  const handleAnnotateByUri = (uri: string) => {
+    console.log("handleAnnotateByUri");
+
+    if (uri.length > 0) {
+      annotateImageByFileMutation.reset();
+      annotateImageByUriMutation.reset();
+      annotateImageByCloudImageMutation.reset();
+
+      setSelectedFileURL(uri);
+      annotateImageByUriMutation.mutate(uri);
+    }
+  };
+
+  const handleCloudImageInfoSelected = (info: CloudImageInfo | null) => {
+    console.log("handleCloudImageInfoSelected");
+    if (info != null) {
+      // Reset upload results
+      annotateImageByFileMutation.reset();
+      annotateImageByUriMutation.reset();
+      annotateImageByCloudImageMutation.reset();
+
+      // setSelectedFileURL(getImageDataURL(info));
+      setSelectedFileURL(
+        "https://cloud.google.com/static/vision/docs/images/bali_small.jpeg"
+      );
+
+      annotateImageByCloudImageMutation.mutate(info);
     } else {
       setSelectedFile(null);
     }
@@ -107,25 +155,61 @@ const ImageAnnotationPage = () => {
     }
   }, [selectedFeatures]);
 
-  const handleAnnotateByUri = (uri: string) => {
-    console.log("handleAnnotateByUri");
-
-    annotateImageByFileMutation.reset();
-    annotateImageByUriMutation.reset();
-    setSelectedFileURL(uri);
-    annotateImageByUriMutation.mutate(uri);
-  };
   const handleImageSourceChange = (imageSource: ImageSource) => {
     setImageSource(imageSource);
   };
 
   let isLoading: boolean =
     annotateImageByFileMutation.isLoading ||
-    annotateImageByUriMutation.isLoading;
+    annotateImageByUriMutation.isLoading ||
+    annotateImageByCloudImageMutation.isLoading;
   let error: Error | null =
-    annotateImageByFileMutation.error || annotateImageByUriMutation.error;
+    annotateImageByFileMutation.error ||
+    annotateImageByUriMutation.error ||
+    annotateImageByCloudImageMutation.error;
   let annotationResult: ImageAnnotationResult | undefined =
-    annotateImageByFileMutation.data || annotateImageByUriMutation.data;
+    annotateImageByFileMutation.data ||
+    annotateImageByUriMutation.data ||
+    annotateImageByCloudImageMutation.data;
+
+  const renderImageSourceSelection = () => {
+    return (
+      <Box sx={{ borderLeft: 4, padding: 2, borderColor: blueGrey[200] }}>
+        <Typography variant="subtitle1">Image source</Typography>
+        <Typography variant="subtitle2">
+          Choose the image you want to annotate
+        </Typography>
+        <Stack direction="row" spacing={4}>
+          <ImageSourceToggleSelection onChange={handleImageSourceChange} />
+          <UnifiedImageSelector
+            isLoading={isLoading}
+            imageSource={imageSource}
+            handleFileChange={handleFileChange}
+            handleAnnotateByUri={handleAnnotateByUri}
+            handleAnnotateByImageInfo={handleCloudImageInfoSelected}
+          />
+        </Stack>
+      </Box>
+    );
+  };
+
+  const renderImageFeatureSelection = () => {
+    return (
+      <Box sx={{ borderLeft: 4, padding: 2, borderColor: blueGrey[200] }}>
+        <Typography variant="subtitle1">Features</Typography>
+        <Typography variant="subtitle2">
+          Choose the image features you want to detect
+        </Typography>{" "}
+        <FeatureToggleSelection
+          onChange={(features) => {
+            setSelectedFeatures(features);
+          }}
+        />
+      </Box>
+    );
+  };
+
+  const showImageFeatureSelection = imageSource != ImageSource.CloudStorage;
 
   return (
     <Box sx={{ paddingTop: 8 }}>
@@ -135,36 +219,8 @@ const ImageAnnotationPage = () => {
             Annotate Image
           </Typography>
           <Stack spacing={2}>
-            <Box sx={{ borderLeft: 4, padding: 2, borderColor: blueGrey[200] }}>
-              <Typography variant="subtitle1">Image source</Typography>
-              <Typography variant="subtitle2">
-                Choose the image you want to annotate
-              </Typography>
-              <Stack direction="row" spacing={4} height={80}>
-                <ImageSourceToggleSelection
-                  onChange={handleImageSourceChange}
-                />
-                <UnifiedImageSelector
-                  isLoading={isLoading}
-                  imageSource={imageSource}
-                  handleFileChange={handleFileChange}
-                  handleAnnotateByUri={handleAnnotateByUri}
-                  handleAnnotateByGcsUri={() => {}}
-                />
-              </Stack>
-            </Box>
-            <Box sx={{ borderLeft: 4, padding: 2, borderColor: blueGrey[200] }}>
-              <Typography variant="subtitle1">Features</Typography>
-              <Typography variant="subtitle2">
-                Choose the image features you want to detect
-              </Typography>{" "}
-              <FeatureToggleSelection
-                onChange={(features) => {
-                  setSelectedFeatures(features);
-                }}
-              />
-            </Box>
-
+            {renderImageSourceSelection()}
+            {showImageFeatureSelection ? renderImageFeatureSelection() : null}
             {error || isLoading || annotationResult ? (
               <>
                 <Divider />

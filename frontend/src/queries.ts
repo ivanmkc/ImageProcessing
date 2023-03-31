@@ -126,7 +126,7 @@ export async function annotateImageByFile(
   formData.append("image", file);
   formData.append("features", features.join(","));
   return client
-    .post<ImageAnnotationResult>("/", formData)
+    .post<ImageAnnotationResult>("/annotate", formData)
     .then((response) => response.data);
 }
 
@@ -138,23 +138,48 @@ export async function annotateImageByUri(
   formData.append("image_uri", imageUri);
   formData.append("features", features.join(","));
   return client
-    .post<ImageAnnotationResult>("/", formData)
+    .post<ImageAnnotationResult>("/annotate", formData)
     .then((response) => response.data);
 }
 
-const display_client = axios.create({
-  baseURL: "https://display-gcs-http-x4vr3lywrq-wn.a.run.app",
-});
+export async function annotateImageByCloudImageInfo(
+  info: CloudImageInfo
+): Promise<ImageAnnotationResult> {
+  const annotation = info.annotation;
 
-export async function listGCSFolder(
+  if (annotation != null) {
+    return client
+      .get<ImageAnnotationResult>(`/bucket/annotation/${annotation}`, {
+        params: { image_uri: info.annotation },
+      })
+      .then((response) => response.data);
+  } else {
+    throw Error("No annotation exists for this image");
+  }
+}
+
+export interface ListInfoDictionary {
+  [key: string]: { annotation?: string; image: string };
+}
+export interface CloudImageInfo {
+  image: string;
+  annotation?: string;
+}
+
+export async function getImageInfo(
   start?: number,
   end?: number
-): Promise<{ [key: string]: { name: string; content: any[] } }[]> {
-  const formData = new FormData();
-
-  return display_client
-    .get<{ [key: string]: { name: string; content: any[] } }[]>("/?get_list", {
+): Promise<CloudImageInfo[]> {
+  return client
+    .get<ListInfoDictionary>("/bucket/list", {
       params: { start, end },
     })
-    .then((response) => response.data);
+    .then((response) => response.data)
+    .then((listInfoDict) =>
+      Object.entries(listInfoDict).map(([key, value]) => value)
+    );
+}
+
+export function getImageDataURL(info: CloudImageInfo): string {
+  return `${import.meta.env.VITE_API_SERVER}/bucket/imageData/${info.image}`;
 }

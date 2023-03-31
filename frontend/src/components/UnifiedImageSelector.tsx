@@ -1,6 +1,7 @@
 import { Box, Typography, TextField, Button } from "@mui/material";
 import { useEffect, useState } from "react";
-import GCSFileSelector from "components/GCSFileSelector";
+import CloudImageInfoSelector from "components/CloudImageSelector";
+import { CloudImageInfo as CloudImageInfo } from "queries";
 
 export enum ImageSource {
   Upload,
@@ -13,7 +14,7 @@ type ImageSelectorProps = {
   imageSource: ImageSource;
   handleFileChange: (file: File | null) => void;
   handleAnnotateByUri: (uri: string) => void;
-  handleAnnotateByGcsUri: () => void;
+  handleAnnotateByImageInfo: (info: CloudImageInfo) => void;
 };
 
 const AnnotateByUri = ({
@@ -65,10 +66,9 @@ export const UnifiedImageSelector = ({
   imageSource,
   handleFileChange,
   handleAnnotateByUri,
-  handleAnnotateByGcsUri,
+  handleAnnotateByImageInfo,
 }: ImageSelectorProps) => {
   const [imageUri, setImageUri] = useState("");
-  const [gcsUri, setGCSUri] = useState("");
 
   const renderUpload = () => (
     <Box sx={{ flex: 1 }}>
@@ -98,13 +98,17 @@ export const UnifiedImageSelector = ({
   );
 
   const renderCloudStorage = () => (
-    <GCSFileSelector
-      gcsUri={gcsUri}
-      onUriChanged={(text) => setGCSUri(text)}
-      isButtonDisabled={gcsUri.length == 0 || isLoading}
-      onConfirmClicked={handleAnnotateByGcsUri}
-    />
+    <CloudImageInfoSelector onImageInfoSelected={handleAnnotateByImageInfo} />
   );
+
+  // Fetch info on init
+  useEffect(() => {
+    console.log(`UnifiedImageSelector init: imageSource = ${imageSource}`);
+  }, []);
+
+  useEffect(() => {
+    console.log(`UnifiedImageSelector: imageSource changed to ${imageSource}`);
+  }, [imageSource]);
 
   switch (imageSource) {
     case ImageSource.Upload:
