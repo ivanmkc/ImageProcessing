@@ -162,7 +162,7 @@ export interface ListInfoDictionary {
   [key: string]: { annotation?: string; image: string };
 }
 export interface CloudImageInfo {
-  image: string;
+  imageId: string;
   annotation?: string;
 }
 
@@ -176,10 +176,15 @@ export async function getImageInfo(
     })
     .then((response) => response.data)
     .then((listInfoDict) =>
-      Object.entries(listInfoDict).map(([key, value]) => value)
+      Object.entries(listInfoDict).map(([key, value]) => {
+        return {
+          ...value,
+          imageId: key,
+        };
+      })
     );
 }
 
 export function getImageDataURL(info: CloudImageInfo): string {
-  return `${import.meta.env.VITE_API_SERVER}/bucket/imageData/${info.image}`;
+  return `${import.meta.env.VITE_API_SERVER}/bucket/imagedata/${info.imageId}`;
 }
