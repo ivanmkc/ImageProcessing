@@ -130,10 +130,8 @@ const ImageAnnotationPage = () => {
       annotateImageByUriMutation.reset();
       annotateImageByCloudImageMutation.reset();
 
+      // Get the image url
       setSelectedFileURL(getImageDataURL(info));
-      // setSelectedFileURL(
-      //   "https://cloud.google.com/static/vision/docs/images/bali_small.jpeg"
-      // );
 
       annotateImageByCloudImageMutation.mutate(info);
     } else {

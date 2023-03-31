@@ -16,7 +16,7 @@
 
 import React, { useState } from "react";
 import { Box, Paper, Tabs, Tab, Typography, Grid } from "@mui/material";
-import { ImageUploadResult } from "queries";
+import { ImageAnnotationResult } from "queries";
 import ImageWithBoundingBoxes from "components/ImageWithBoundingBoxes";
 import LabelDetectionResultView from "components/LabelDetectionResultView";
 import ObjectDetectionResultView from "components/ObjectDetectionResultView";
@@ -43,7 +43,7 @@ const ResultContainer = ({
   imageUrl,
 }: {
   imageUrl: string;
-  result: ImageUploadResult;
+  result: ImageAnnotationResult;
 }) => {
   const [selectedTab, setSelectedTab] = useState<number>(0);
   const [selectedIndex, setSelectedIndex] = useState<number>();
