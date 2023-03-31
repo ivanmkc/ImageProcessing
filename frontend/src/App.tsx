@@ -64,7 +64,7 @@ const ImageAnnotationPage = () => {
     ImageAnnotationResult,
     Error,
     File
-  >(["annotateImageByFile", selectedFile], (file: File) => {
+  >((file: File) => {
     return annotateImageByFile(file, selectedFeatures);
   });
 
@@ -72,7 +72,7 @@ const ImageAnnotationPage = () => {
     ImageAnnotationResult,
     Error,
     string
-  >(["annotateImageByUri", selectedFileUrl], (imageUri: string) => {
+  >((imageUri: string) => {
     return annotateImageByUri(imageUri, selectedFeatures);
   });
 
@@ -80,7 +80,7 @@ const ImageAnnotationPage = () => {
     ImageAnnotationResult,
     Error,
     CloudImageInfo
-  >(["annotateImageByCloudImage"], (info: CloudImageInfo) => {
+  >((info: CloudImageInfo) => {
     return annotateImageByCloudImageInfo(info);
   });
 
@@ -139,6 +139,7 @@ const ImageAnnotationPage = () => {
     }
   };
 
+  // Annotation when features list changes
   useEffect(() => {
     console.log("selectedFeatures changed");
     switch (imageSource) {

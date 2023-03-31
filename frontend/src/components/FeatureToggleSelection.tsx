@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { Box, Typography } from "@mui/material";
@@ -16,18 +16,23 @@ const FEATURE_TO_LABEL_MAP = {
 };
 
 const FeatureSelector = ({ onChange }: Props) => {
-  const [selectedFeatures, setSelectedFeatures] = useState<string[]>(
-    Object.keys(FEATURE_TO_LABEL_MAP)
-  );
+  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
+
+  // Set to all features on init
+  useEffect(() => {
+    setSelectedFeatures(Object.keys(FEATURE_TO_LABEL_MAP));
+  }, []);
+
+  // Call change handler whenever features changes
+  useEffect(() => {
+    onChange(selectedFeatures);
+  }, [selectedFeatures, setSelectedFeatures]);
 
   const handleFeatureSelection = (
     event: React.MouseEvent<HTMLElement>,
     newSelection: string[]
   ) => {
-    if (newSelection !== null) {
-      setSelectedFeatures(newSelection);
-      onChange(newSelection);
-    }
+    setSelectedFeatures(newSelection);
   };
 
   return (
