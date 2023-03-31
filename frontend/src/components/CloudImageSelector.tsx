@@ -17,7 +17,7 @@ import { useQuery } from "react-query";
 import * as React from "react";
 import TablePagination from "@mui/material/TablePagination";
 interface Column {
-  id: "annotation";
+  id: "imageId" | "annotation";
   label: string;
   minWidth?: number;
   align?: "right";
@@ -25,7 +25,7 @@ interface Column {
 }
 
 const columns: readonly Column[] = [
-  { id: "annotation", label: "Select an image below" },
+  { id: "imageId", label: "Select an image below" },
 ];
 
 const StickyHeadTable = ({
