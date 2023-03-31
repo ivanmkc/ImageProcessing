@@ -55,11 +55,6 @@ const ImageAnnotationPage = () => {
     ImageSource.Upload
   );
 
-  // Fetch info on init
-  useEffect(() => {
-    console.log("ImageAnnotationPage init");
-  }, []);
-
   const annotateImageByFileMutation = useMutation<
     ImageAnnotationResult,
     Error,
@@ -139,7 +134,7 @@ const ImageAnnotationPage = () => {
     }
   };
 
-  // Annotation when features list changes
+  // Redo annotation when features list changes
   useEffect(() => {
     console.log("selectedFeatures changed");
     switch (imageSource) {
@@ -153,6 +148,17 @@ const ImageAnnotationPage = () => {
         break;
     }
   }, [selectedFeatures]);
+
+  // Clear results and file URL
+  useEffect(() => {
+    console.log("imageSource changed");
+    setSelectedFileURL("");
+
+    // Reset upload results
+    annotateImageByFileMutation.reset();
+    annotateImageByUriMutation.reset();
+    annotateImageByCloudImageMutation.reset();
+  }, [imageSource]);
 
   const handleImageSourceChange = (imageSource: ImageSource) => {
     setImageSource(imageSource);
