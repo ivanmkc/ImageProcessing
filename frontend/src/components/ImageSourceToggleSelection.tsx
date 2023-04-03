@@ -33,7 +33,7 @@ export default ({ onChange }: Props) => {
       value={selectedOptions}
       exclusive
       onChange={handleSelection}
-      sx={{ height: 80 }}
+      sx={{ height: 80, flexShrink: 0 }}
     >
       {Object.entries(OPTION_TO_LABEL_MAP).map(([label, value]) => (
         <ToggleButton key={label} value={value} aria-label={label}>

@@ -1,32 +1,11 @@
-import {
-  Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Paper,
-  TableContainer,
-  CircularProgress,
-  Alert,
-} from "@mui/material";
 import { getImageInfo, CloudImageInfo } from "queries";
 import { useState } from "react";
 import { useQuery } from "react-query";
-
 import * as React from "react";
-import TablePagination from "@mui/material/TablePagination";
-interface Column {
-  id: "imageId" | "annotation";
-  label: string;
-  minWidth?: number;
-  align?: "right";
-  format?: (value: number) => string;
-}
+import clsx from "clsx";
+import { ClockIcon } from "@heroicons/react/24/solid";
 
-const columns: readonly Column[] = [
-  { id: "imageId", label: "Select an image below" },
-];
+const rowsPerPage = 5;
 
 const StickyHeadTable = ({
   selectedValue,
@@ -40,87 +19,74 @@ const StickyHeadTable = ({
   onInfoSelected: (info: CloudImageInfo) => void;
 }) => {
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
   };
 
   if (isLoading) {
     return (
-      <Alert
-        severity="info"
-        icon={<CircularProgress size={24} />}
-        sx={{ height: 40 }}
-      >
-        <Typography variant="body1" sx={{ ml: 2, mr: 2 }}>
-          Loading images from Cloud Storage
-        </Typography>
-      </Alert>
-    );
-  } else {
-    return (
-      <Paper sx={{ overflow: "auto", flex: 1 }}>
-        <TableContainer>
-          <Table stickyHeader>
-            <TableHead>
-              <TableRow>
-                {columns.map((column) => (
-                  <TableCell
-                    key={column.id}
-                    align={column.align}
-                    style={{ minWidth: column.minWidth }}
-                  >
-                    {column.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {listInfos
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((info) => {
-                  return (
-                    <TableRow
-                      hover
-                      tabIndex={-1}
-                      key={info.annotation}
-                      selected={selectedValue?.annotation == info.annotation}
-                      onClick={(event) => onInfoSelected(info)}
-                    >
-                      {columns.map((column) => {
-                        const value = info[column.id];
-                        return (
-                          <TableCell key={column.id} align={column.align}>
-                            {value}
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
-                  );
-                })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10]}
-          component="div"
-          count={listInfos.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Paper>
+      <div className="alert alert-info">
+        <div>
+          <ClockIcon className="stroke-current flex-shrink-0 h-6 w-6" />
+          <span>Loading images from Cloud Storage</span>
+        </div>
+      </div>
     );
   }
+
+  const startIndex = page * rowsPerPage;
+  const endIndex = page * rowsPerPage + rowsPerPage;
+  const infoSlice = listInfos.slice(startIndex, endIndex);
+
+  return (
+    <div className="flex flex-col w-full min-w-md">
+      <table className="table table-zebra table-hover">
+        <thead>
+          <tr>
+            <th key="imageId" className={clsx("px-4 py-2", "text-left")}>
+              Select an image below
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {infoSlice.map((info, index) => (
+            <tr
+              key={index}
+              className={clsx(
+                "cursor-pointer",
+                selectedValue?.annotation === info.annotation && "bg-gray-200"
+              )}
+              onClick={() => onInfoSelected(info)}
+            >
+              <td className={clsx("px-4 py-4", "text-left")}>{info.imageId}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div className="flex items-center justify-end mt-3">
+        <div className="pagination">
+          <button
+            className="btn btn-primary btn-sm"
+            disabled={page === 0}
+            onClick={() => handleChangePage(null, page - 1)}
+          >
+            Previous
+          </button>
+          <span className="mx-3">
+            Items {startIndex} to {endIndex}
+          </span>
+          <button
+            className="btn btn-primary btn-sm"
+            disabled={page === Math.ceil(listInfos.length / rowsPerPage) - 1}
+            onClick={() => handleChangePage(null, page + 1)}
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default ({
@@ -144,7 +110,7 @@ export default ({
       selectedValue={selectedImageInfo}
       listInfos={getImageInfoQuery.data ?? []}
       isLoading={getImageInfoQuery.isLoading}
-      onInfoSelected={(info) => {
+      onInfoSelected={(info: CloudImageInfo) => {
         setSelectedImageInfo(info);
         onImageInfoSelected(info);
       }}
