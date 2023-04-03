@@ -1,51 +1,82 @@
-import React, { useEffect, useState } from "react";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import { Box, Typography } from "@mui/material";
+import { useState, useEffect } from "react";
+import clsx from "clsx";
+
+import {
+  OBJECT_LOCALIZATION,
+  LABEL_DETECTION,
+  IMAGE_PROPERTIES,
+  SAFE_SEARCH_DETECTION,
+  FACE_DETECTION,
+} from "constants";
 
 interface Props {
   onChange: (features: string[]) => void;
 }
 
-const FEATURE_TO_LABEL_MAP = {
-  OBJECT_LOCALIZATION: "Object localization",
-  LABEL_DETECTION: "Label detection",
-  IMAGE_PROPERTIES: "Image properties",
-  SAFE_SEARCH_DETECTION: "Safe-search detection",
-  FACE_DETECTION: "Face detection",
-};
+const FEATURES = [
+  {
+    value: OBJECT_LOCALIZATION,
+    label: "Object localization",
+  },
+  {
+    value: LABEL_DETECTION,
+    label: "Label detection",
+  },
+  { value: IMAGE_PROPERTIES, label: "Image properties" },
+  {
+    value: SAFE_SEARCH_DETECTION,
+    label: "Safe-search detection",
+  },
+  { value: FACE_DETECTION, label: "Face detection" },
+];
 
 const FeatureSelector = ({ onChange }: Props) => {
-  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
+  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([
+    OBJECT_LOCALIZATION,
+    LABEL_DETECTION,
+    IMAGE_PROPERTIES,
+    SAFE_SEARCH_DETECTION,
+    FACE_DETECTION,
+  ]);
 
-  // Set to all features on init
-  useEffect(() => {
-    setSelectedFeatures(Object.keys(FEATURE_TO_LABEL_MAP));
-  }, []);
-
-  // Call change handler whenever features changes
   useEffect(() => {
     onChange(selectedFeatures);
-  }, [selectedFeatures, setSelectedFeatures]);
+  }, [selectedFeatures]);
 
   const handleFeatureSelection = (
-    event: React.MouseEvent<HTMLElement>,
+    event: React.MouseEvent<HTMLButtonElement>,
     newSelection: string[]
   ) => {
     setSelectedFeatures(newSelection);
   };
 
   return (
-    <ToggleButtonGroup
-      value={selectedFeatures}
-      onChange={handleFeatureSelection}
-    >
-      {Object.entries(FEATURE_TO_LABEL_MAP).map(([feature, label]) => (
-        <ToggleButton key={feature} value={feature} aria-label={label}>
-          {label}
-        </ToggleButton>
+    <div className="flex flex-wrap gap-2">
+      {FEATURES.map(({ value, label }) => (
+        <button
+          key={value}
+          value={value}
+          className={clsx(
+            "transition-colors duration-150",
+            "border p-2",
+            selectedFeatures.includes(value)
+              ? `border-solid border-secondary text-secondary`
+              : "border-dashed border-neutral-300 text-neutral-500 hover:border-secondary-focus hover:text-secondary-focus"
+          )}
+          onClick={(e) => {
+            e.preventDefault();
+            handleFeatureSelection(
+              e,
+              selectedFeatures.includes(value)
+                ? selectedFeatures.filter((item) => item !== value)
+                : [...selectedFeatures, value]
+            );
+          }}
+        >
+          <span className="text-sm">{label}</span>
+        </button>
       ))}
-    </ToggleButtonGroup>
+    </div>
   );
 };
 

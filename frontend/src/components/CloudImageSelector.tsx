@@ -28,6 +28,7 @@ const StickyHeadTable = ({
     return (
       <div className="alert alert-info">
         <div>
+          {/* <div className="loading"></div> */}
           <ClockIcon className="stroke-current flex-shrink-0 h-6 w-6" />
           <span>Loading images from Cloud Storage</span>
         </div>
