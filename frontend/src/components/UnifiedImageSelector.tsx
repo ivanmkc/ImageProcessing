@@ -1,4 +1,4 @@
-import { Box, Typography, TextField, Button } from "@mui/material";
+import clsx from "clsx";
 import { useEffect, useState } from "react";
 import CloudImageInfoSelector from "components/CloudImageSelector";
 import { CloudImageInfo as CloudImageInfo } from "queries";
@@ -29,35 +29,39 @@ const AnnotateByUri = ({
   onConfirmClicked?: () => void;
 }) => {
   return (
-    <>
-      <Box sx={{ flex: 1 }}>
-        <Typography variant="subtitle2">Paste an image URL</Typography>
-        <TextField
+    <div className="flex items-end space-x-4">
+      <div className="flex-1 flex-col items-baseline space-y-2">
+        <label className="font-extralight">Paste an image URL</label>
+        <input
           id="outlined-controlled"
           value={imageUri}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             onImageUriChanged(event.target.value);
           }}
-          fullWidth
+          className="w-full mb-2 input input-bordered"
           onKeyUp={(event) => {
             if (event.key === "Enter" && onConfirmClicked != null) {
               onConfirmClicked();
             }
           }}
         />
-      </Box>
-      <Button
-        variant="contained"
+      </div>
+      <button
         onClick={() => {
           if (onConfirmClicked != null) {
             onConfirmClicked();
           }
         }}
+        className={clsx(
+          "btn",
+          "btn-primary",
+          isButtonDisabled && "btn-disabled cursor-not-allowed"
+        )}
         disabled={isButtonDisabled}
       >
         Annotate
-      </Button>
-    </>
+      </button>
+    </div>
   );
 };
 
@@ -71,21 +75,23 @@ export const UnifiedImageSelector = ({
   const [imageUri, setImageUri] = useState("");
 
   const renderUpload = () => (
-    <Box sx={{ flex: 1 }}>
-      <Typography variant="subtitle2">Choose a file</Typography>
-      <TextField
-        type="file"
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          const files = event.target.files;
-          if (files && files.length > 0) {
-            handleFileChange(files[0]);
-          } else {
-            handleFileChange(null);
-          }
-        }}
-        fullWidth
-      />
-    </Box>
+    <div className="flex items-end space-x-4">
+      <div className="flex-1 flex-col items-baseline space-y-2">
+        <label className="font-extralight">Choose a file</label>
+        <input
+          type="file"
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            const files = event.target.files;
+            if (files && files.length > 0) {
+              handleFileChange(files[0]);
+            } else {
+              handleFileChange(null);
+            }
+          }}
+          className="w-full file-input input-bordered max-w-md"
+        />
+      </div>
+    </div>
   );
 
   const renderURL = () => (
@@ -107,7 +113,7 @@ export const UnifiedImageSelector = ({
   }, []);
 
   useEffect(() => {
-    console.log(`UnifiedImageSelector: imageSource changed to ${imageSource}`);
+    console.log(`UnifiedImageSelector:imageSource changed to ${imageSource}`);
   }, [imageSource]);
 
   switch (imageSource) {
