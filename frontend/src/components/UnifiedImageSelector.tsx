@@ -75,7 +75,7 @@ export const UnifiedImageSelector = ({
   const [imageUri, setImageUri] = useState("");
 
   const renderUpload = () => (
-    <div className="flex items-end space-x-4">
+    <div className="flex flex-col items-start">
       <div className="flex-1 flex-col items-baseline space-y-2">
         <label className="font-extralight">Choose a file</label>
         <input

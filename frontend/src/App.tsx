@@ -1,21 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  QueryClient,
-  QueryClientProvider,
-  useMutation,
-  useQuery,
-} from "react-query";
-import {
-  Alert,
-  Box,
-  CircularProgress,
-  Container,
-  Divider,
-  Paper,
-  ToggleButton,
-  ToggleButtonGroup,
-  Typography,
-} from "@mui/material";
+import { QueryClient, QueryClientProvider, useMutation } from "react-query";
 import {
   annotateImageByCloudImageInfo,
   annotateImageByFile,
@@ -24,26 +8,28 @@ import {
   getImageDataURL,
   ImageAnnotationResult,
 } from "queries";
-import { Stack } from "@mui/system";
 import ResultContainer from "components/ResultsContainer";
 import {
   ImageSource,
   UnifiedImageSelector,
 } from "components/UnifiedImageSelector";
 import FeatureToggleSelection from "components/FeatureToggleSelection";
-import { blueGrey, grey } from "@mui/material/colors";
 import ImageSourceToggleSelection from "components/ImageSourceToggleSelection";
+import clsx from "clsx";
 
 const ErrorAlert = ({ error }: { error: Error }) => (
-  <Alert severity="error">Error: {error.message}</Alert>
+  <div className="bg-red-500 text-white p-4 rounded">
+    Error: {error.message}
+  </div>
 );
 
 const LoadingAlert = () => (
-  <Alert severity="info" icon={<CircularProgress size={24} />}>
-    <Typography variant="body1" sx={{ ml: 2 }}>
-      Uploading image...
-    </Typography>
-  </Alert>
+  <div className="bg-blue-500 text-white p-4 rounded flex items-center">
+    <div className="animate-spin mr-2">
+      <i className="fas fa-spinner"></i>
+    </div>
+    Uploading image...
+  </div>
 );
 
 const ImageAnnotationPage = () => {
@@ -179,12 +165,10 @@ const ImageAnnotationPage = () => {
 
   const renderImageSourceSelection = () => {
     return (
-      <Box sx={{ borderLeft: 4, padding: 2, borderColor: blueGrey[200] }}>
-        <Typography variant="subtitle1">Image source</Typography>
-        <Typography variant="subtitle2">
-          Choose the image you want to annotate
-        </Typography>
-        <Stack direction="row" spacing={4}>
+      <div className={clsx("border-l-4 pl-4 border-blueGray-200", "space-y-2")}>
+        <h6 className="text-lg">Image source</h6>
+        <p className="text-base">Choose the image you want to annotate</p>
+        <div className="grid grid-col-1 md:grid-cols-2 gap-4">
           <ImageSourceToggleSelection onChange={handleImageSourceChange} />
           <UnifiedImageSelector
             isLoading={isLoading}
@@ -193,57 +177,50 @@ const ImageAnnotationPage = () => {
             handleAnnotateByUri={handleAnnotateByUri}
             handleAnnotateByImageInfo={handleCloudImageInfoSelected}
           />
-        </Stack>
-      </Box>
+        </div>
+      </div>
     );
   };
 
   const renderImageFeatureSelection = () => {
     return (
-      <Box sx={{ borderLeft: 4, padding: 2, borderColor: blueGrey[200] }}>
-        <Typography variant="subtitle1">Features</Typography>
-        <Typography variant="subtitle2">
+      <div className={clsx("border-l-4 pl-4 border-blueGray-200", "space-y-2")}>
+        <h6 className="text-lg">Features</h6>
+        <p className="text-base">
           Choose the image features you want to detect
-        </Typography>{" "}
+        </p>
         <FeatureToggleSelection
           onChange={(features) => {
             setSelectedFeatures(features);
           }}
         />
-      </Box>
+      </div>
     );
   };
 
   const showImageFeatureSelection = imageSource != ImageSource.CloudStorage;
 
   return (
-    <Box sx={{ paddingTop: 8 }}>
-      <Container maxWidth="lg">
-        <Paper sx={{ p: 2 }}>
-          <Typography variant="h5" sx={{ mb: 2 }}>
-            Annotate Image
-          </Typography>
-          <Stack spacing={2}>
-            {renderImageSourceSelection()}
-            {showImageFeatureSelection ? renderImageFeatureSelection() : null}
-            {error || isLoading || annotationResult ? (
-              <>
-                <Divider />
-                <Typography variant="h5">Results</Typography>
-                {error && <ErrorAlert error={error} />}
-                {isLoading && <LoadingAlert />}
-                {annotationResult != null && selectedFileUrl != null ? (
-                  <ResultContainer
-                    imageUrl={selectedFileUrl}
-                    result={annotationResult}
-                  />
-                ) : null}
-              </>
+    <div className="container mx-auto max-w-6xl pt-8">
+      <span className="text-2xl mb-2">Annotate Image</span>
+      <div className="space-y-8">
+        {renderImageSourceSelection()}
+        {showImageFeatureSelection ? renderImageFeatureSelection() : null}
+        {error || isLoading || annotationResult ? (
+          <>
+            <span className="text-2xl">Results</span>
+            {error && <ErrorAlert error={error} />}
+            {isLoading && <LoadingAlert />}
+            {annotationResult != null && selectedFileUrl != null ? (
+              <ResultContainer
+                imageUrl={selectedFileUrl}
+                result={annotationResult}
+              />
             ) : null}
-          </Stack>
-        </Paper>
-      </Container>
-    </Box>
+          </>
+        ) : null}
+      </div>
+    </div>
   );
 };
 
