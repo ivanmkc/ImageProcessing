@@ -21,7 +21,7 @@ const ProgressBar = ({
 }) => (
   <div className="h-2 bg-gray-200 rounded">
     <div
-      className={clsx("h-2 bg-indigo-600 rounded", className)}
+      className={clsx("h-2 bg-accent rounded", className)}
       style={{ width: `${value}%` }}
     ></div>
   </div>
@@ -52,24 +52,32 @@ const LabelRow = ({
 
 export default ({ annotation }: { annotation: SafeSearchAnnotation }) => {
   return (
-    <table className="w-full table-fixed">
-      <tbody>
-        <tr>
-          <LabelRow label="Adult" confidence={annotation.adult} />
-        </tr>
-        <tr>
-          <LabelRow label="Spoof" confidence={annotation.spoof} />
-        </tr>
-        <tr>
-          <LabelRow label="Medical" confidence={annotation.medical} />
-        </tr>
-        <tr>
-          <LabelRow label="Violence" confidence={annotation.violence} />
-        </tr>
-        <tr>
-          <LabelRow label="Racy" confidence={annotation.racy} />
-        </tr>
-      </tbody>
-    </table>
+    <div className="flex flex-col gap-4">
+      <span className="text-md font-medium">
+        SafeSearch Detection detects explicit content such as adult content or
+        violent content within an image. This feature uses five categories
+        (adult, spoof, medical, violence, and racy) and returns the likelihood
+        that each is present in a given image.
+      </span>
+      <table className="w-full table-fixed">
+        <tbody>
+          <tr>
+            <LabelRow label="Adult" confidence={annotation.adult} />
+          </tr>
+          <tr>
+            <LabelRow label="Spoof" confidence={annotation.spoof} />
+          </tr>
+          <tr>
+            <LabelRow label="Medical" confidence={annotation.medical} />
+          </tr>
+          <tr>
+            <LabelRow label="Violence" confidence={annotation.violence} />
+          </tr>
+          <tr>
+            <LabelRow label="Racy" confidence={annotation.racy} />
+          </tr>
+        </tbody>
+      </table>
+    </div>
   );
 };
