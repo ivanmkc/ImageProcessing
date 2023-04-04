@@ -8,7 +8,7 @@ import {
   Alert,
 } from "@mui/material";
 import { Annotation } from "queries";
-import ConfidenceLabelRow from "components/ConfidenceLabelRow";
+import ConfidenceLabelRow from "components/results/ConfidenceLabelRow";
 
 export default ({ annotations }: { annotations: Annotation[] }) => {
   if (annotations.length == 0) {

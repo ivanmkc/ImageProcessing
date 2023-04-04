@@ -12,9 +12,9 @@ import ResultContainer from "components/ResultsContainer";
 import {
   ImageSource,
   UnifiedImageSelector,
-} from "components/UnifiedImageSelector";
-import FeatureToggleSelection from "components/FeatureToggleSelection";
-import ImageSourceToggleSelection from "components/ImageSourceToggleSelection";
+} from "components/selection/UnifiedImageSelector";
+import FeatureToggleSelection from "components/selection/FeatureToggleSelection";
+import ImageSourceToggleSelection from "components/selection/ImageSourceToggleSelection";
 import clsx from "clsx";
 
 const ErrorAlert = ({ error }: { error: Error }) => (

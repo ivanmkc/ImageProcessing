@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { useEffect, useState } from "react";
-import CloudImageInfoSelector from "components/CloudImageSelector";
+import CloudImageInfoSelector from "components/selection/CloudImageSelector";
 import { CloudImageInfo as CloudImageInfo } from "queries";
 
 export enum ImageSource {

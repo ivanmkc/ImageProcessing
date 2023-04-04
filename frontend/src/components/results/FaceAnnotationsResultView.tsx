@@ -10,7 +10,7 @@ import {
   Alert,
 } from "@mui/material";
 import { FaceAnnotation } from "queries";
-import ConfidenceLabelRow from "components/ConfidenceLabelRow";
+import ConfidenceLabelRow from "components/results/ConfidenceLabelRow";
 
 export default ({
   annotations,
