@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import clsx from "clsx";
 import { ImageAnnotationResult } from "queries";
 import ImageWithBoundingBoxes from "components/ImageWithBoundingBoxes";
-import LabelDetectionResultView from "components/LabelDetectionResultView";
-import ObjectDetectionResultView from "components/ObjectDetectionResultView";
-import SafeSearchResultView from "components/SafeSearchResultView";
-import ImagePropertiesResultView from "components/ImagePropertiesResultView";
-import FaceAnnotationsResultView from "components/FaceAnnotationsResultView";
+import LabelDetectionResultView from "components/results/LabelDetectionResultView";
+import ObjectDetectionResultView from "components/results/ObjectDetectionResultView";
+import SafeSearchResultView from "components/results/SafeSearchResultView";
+import ImagePropertiesResultView from "components/results/ImagePropertiesResultView";
+import FaceAnnotationsResultView from "components/results/FaceAnnotationsResultView";
 
 const tabLabels: { [key: string]: keyof ImageAnnotationResult } = {
   Objects: "localizedObjectAnnotations",
