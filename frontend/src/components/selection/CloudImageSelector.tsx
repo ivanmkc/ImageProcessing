@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 import * as React from "react";
 import clsx from "clsx";
 import { ClockIcon } from "@heroicons/react/24/solid";
+import Alert from "components/Alert";
 
 const rowsPerPage = 5;
 
@@ -25,15 +26,7 @@ const StickyHeadTable = ({
   };
 
   if (isLoading) {
-    return (
-      <div className="alert alert-info">
-        <div>
-          {/* <div className="loading"></div> */}
-          <ClockIcon className="stroke-current flex-shrink-0 h-6 w-6" />
-          <span>Loading images from Cloud Storage</span>
-        </div>
-      </div>
-    );
+    return <Alert mode="loading" text="Loading images from Cloud Storage" />;
   }
 
   const startIndex = page * rowsPerPage;

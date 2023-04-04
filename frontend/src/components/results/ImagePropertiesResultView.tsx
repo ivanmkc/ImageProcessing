@@ -49,7 +49,11 @@ const ImagePropertiesTable: React.FC<ImagePropertiesTableProps> = ({
   annotation,
 }) => {
   return (
-    <div>
+    <div className="flex flex-col gap-4">
+      <span className="text-md font-medium">
+        The Image Properties feature detects general attributes of the image,
+        such as dominant color.
+      </span>
       <table className="w-full">
         <tbody>
           {annotation.dominantColors.colors

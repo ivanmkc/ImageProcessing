@@ -16,21 +16,13 @@ import {
 import FeatureToggleSelection from "components/selection/FeatureToggleSelection";
 import ImageSourceToggleSelection from "components/selection/ImageSourceToggleSelection";
 import clsx from "clsx";
+import Alert from "components/Alert";
 
 const ErrorAlert = ({ error }: { error: Error }) => (
-  <div className="bg-red-500 text-white p-4 rounded">
-    Error: {error.message}
-  </div>
+  <Alert mode="error" text={error.message} />
 );
 
-const LoadingAlert = () => (
-  <div className="bg-blue-500 text-white p-4 rounded flex items-center">
-    <div className="animate-spin mr-2">
-      <i className="fas fa-spinner"></i>
-    </div>
-    Uploading image...
-  </div>
-);
+const LoadingAlert = () => <Alert mode="loading" text="Uploading image" />;
 
 const ImageAnnotationPage = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -201,22 +193,29 @@ const ImageAnnotationPage = () => {
   const showImageFeatureSelection = imageSource != ImageSource.CloudStorage;
 
   return (
-    <div className="container mx-auto max-w-6xl pt-8">
+    <div className="container mx-auto max-w-6xl px-4 bg-gray-50 py-4">
       <span className="text-2xl mb-2">Annotate Image</span>
       <div className="space-y-8">
         {renderImageSourceSelection()}
         {showImageFeatureSelection ? renderImageFeatureSelection() : null}
         {error || isLoading || annotationResult ? (
           <>
-            <span className="text-2xl">Results</span>
-            {error && <ErrorAlert error={error} />}
-            {isLoading && <LoadingAlert />}
-            {annotationResult != null && selectedFileUrl != null ? (
-              <ResultContainer
-                imageUrl={selectedFileUrl}
-                result={annotationResult}
-              />
-            ) : null}
+            <div
+              className={clsx(
+                "border-l-4 pl-4 border-blueGray-200",
+                "space-y-2"
+              )}
+            >
+              <span className="text-2xl">Results</span>
+              {error && <ErrorAlert error={error} />}
+              {isLoading && <LoadingAlert />}
+              {annotationResult != null && selectedFileUrl != null ? (
+                <ResultContainer
+                  imageUrl={selectedFileUrl}
+                  result={annotationResult}
+                />
+              ) : null}
+            </div>
           </>
         ) : null}
       </div>
