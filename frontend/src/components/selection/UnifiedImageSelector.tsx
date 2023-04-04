@@ -84,8 +84,6 @@ export const UnifiedImageSelector = ({
             const files = event.target.files;
             if (files && files.length > 0) {
               handleFileChange(files[0]);
-            } else {
-              handleFileChange(null);
             }
           }}
           className="w-full file-input input-bordered max-w-md"

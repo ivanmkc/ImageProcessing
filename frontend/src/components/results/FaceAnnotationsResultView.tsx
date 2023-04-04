@@ -1,16 +1,7 @@
-import {
-  LinearProgress,
-  TableCell,
-  TableContainer,
-  Paper,
-  Table,
-  TableRow,
-  TableBody,
-  Typography,
-  Alert,
-} from "@mui/material";
-import { FaceAnnotation } from "queries";
+import { useState } from "react";
+import clsx from "clsx";
 import ConfidenceLabelRow from "components/results/ConfidenceLabelRow";
+import { FaceAnnotation } from "queries";
 
 export default ({
   annotations,
@@ -19,13 +10,15 @@ export default ({
   annotations: FaceAnnotation[];
   onIndexSelected?: (index?: number) => void;
 }) => {
-  if (annotations.length == 0) {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  if (annotations.length === 0) {
     return (
-      <Alert severity="info">
-        <Typography variant="body1" sx={{ ml: 2 }}>
-          No faces detected.
-        </Typography>
-      </Alert>
+      <div className="alert alert-info shadow-lg">
+        <div>
+          <span>No faces detected.</span>
+        </div>
+      </div>
     );
   }
 
@@ -35,18 +28,23 @@ export default ({
   );
 
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableBody>
+    <div className="shadow">
+      <table className="w-full divide-y divide-neutral-200">
+        <tbody className="bg-white divide-y divide-neutral-200">
           {faces.map(({ detectionConfidence }, index) => (
-            <TableRow
+            <tr
               key={index}
+              className={clsx("cursor-pointer", {
+                "bg-gray-100": hoveredIndex === index,
+              })}
               onMouseEnter={() => {
+                setHoveredIndex(index);
                 if (onIndexSelected) {
                   onIndexSelected(index);
                 }
               }}
               onMouseLeave={() => {
+                setHoveredIndex(null);
                 if (onIndexSelected) {
                   onIndexSelected(undefined);
                 }
@@ -57,10 +55,10 @@ export default ({
                 label={`Face ${index + 1}`}
                 confidence={detectionConfidence}
               />
-            </TableRow>
+            </tr>
           ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+        </tbody>
+      </table>
+    </div>
   );
 };

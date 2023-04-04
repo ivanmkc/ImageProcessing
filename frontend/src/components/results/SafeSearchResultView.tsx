@@ -1,14 +1,4 @@
-import {
-  LinearProgress,
-  TableCell,
-  TableContainer,
-  Paper,
-  Table,
-  TableRow,
-  TableBody,
-  Typography,
-  Alert,
-} from "@mui/material";
+import clsx from "clsx";
 import { SafeSearchAnnotation } from "queries";
 
 const CONFIDENCE_LEVELS_MAP: {
@@ -21,6 +11,21 @@ const CONFIDENCE_LEVELS_MAP: {
   "4": { label: "LIKELY", confidencePercent: (3 / 4) * 100 },
   "5": { label: "VERY LIKELY", confidencePercent: (4 / 4) * 100 },
 };
+
+const ProgressBar = ({
+  value,
+  className,
+}: {
+  value: number;
+  className?: string;
+}) => (
+  <div className="h-2 bg-gray-200 rounded">
+    <div
+      className={clsx("h-2 bg-indigo-600 rounded", className)}
+      style={{ width: `${value}%` }}
+    ></div>
+  </div>
+);
 
 const LabelRow = ({
   label,
@@ -35,42 +40,36 @@ const LabelRow = ({
     CONFIDENCE_LEVELS_MAP[confidence.toString()]["confidencePercent"];
 
   return (
-    <TableCell align="right">
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography variant="caption" style={{ alignSelf: "flex-start" }}>
-          {label}
-        </Typography>
-        <Typography variant="caption" style={{ alignSelf: "flex-end" }}>
-          {confidenceLabel}
-        </Typography>
+    <td className="text-right h-12 border border-neutral-300 p-4">
+      <div className="flex justify-between">
+        <span className="text-xs font-semibold">{label}</span>
+        <span className="text-xs font-medium">{confidenceLabel}</span>
       </div>
-      <LinearProgress variant="determinate" value={confidencePercent} />
-    </TableCell>
+      <ProgressBar value={confidencePercent} className="mt-1" />
+    </td>
   );
 };
 
 export default ({ annotation }: { annotation: SafeSearchAnnotation }) => {
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableBody>
-          <TableRow key={"Adult"}>
-            <LabelRow label="Adult" confidence={annotation.adult} />
-          </TableRow>
-          <TableRow key={"Spoof"}>
-            <LabelRow label="Spoof" confidence={annotation.spoof} />
-          </TableRow>
-          <TableRow key={"Medical"}>
-            <LabelRow label="Medical" confidence={annotation.medical} />
-          </TableRow>
-          <TableRow key={"Violence"}>
-            <LabelRow label="Violence" confidence={annotation.violence} />
-          </TableRow>
-          <TableRow key={"Racy"}>
-            <LabelRow label="Racy" confidence={annotation.racy} />
-          </TableRow>
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <table className="w-full table-fixed">
+      <tbody>
+        <tr>
+          <LabelRow label="Adult" confidence={annotation.adult} />
+        </tr>
+        <tr>
+          <LabelRow label="Spoof" confidence={annotation.spoof} />
+        </tr>
+        <tr>
+          <LabelRow label="Medical" confidence={annotation.medical} />
+        </tr>
+        <tr>
+          <LabelRow label="Violence" confidence={annotation.violence} />
+        </tr>
+        <tr>
+          <LabelRow label="Racy" confidence={annotation.racy} />
+        </tr>
+      </tbody>
+    </table>
   );
 };

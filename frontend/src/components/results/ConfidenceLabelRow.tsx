@@ -1,5 +1,3 @@
-import { LinearProgress, TableCell, Typography } from "@mui/material";
-
 export default ({
   index,
   label,
@@ -12,17 +10,20 @@ export default ({
   const confidencePercent = confidence * 100;
 
   return (
-    <TableCell align="right">
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography variant="caption" style={{ alignSelf: "flex-start" }}>
-          {label}
-        </Typography>
-        <Typography variant="caption" style={{ alignSelf: "flex-end" }}>
-          {index == 0 ? "Confidence = " : null}
+    <td className="text-right h-12 border border-neutral-300 p-4">
+      <div className={"flex justify-between items-start"}>
+        <span className="text-xs font-semibold">{label}</span>
+        <span className="text-xs font-medium">
+          {index === 0 ? "Confidence = " : null}
           {confidence.toFixed(2)}
-        </Typography>
+        </span>
       </div>
-      <LinearProgress variant="determinate" value={confidencePercent} />
-    </TableCell>
+      <div className={"h-2 bg-gray-200 rounded overflow-hidden mt-1"}>
+        <div
+          className={"bg-green-600 h-full"}
+          style={{ width: `${confidencePercent}%` }}
+        ></div>
+      </div>
+    </td>
   );
 };

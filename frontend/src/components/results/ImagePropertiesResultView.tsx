@@ -1,71 +1,72 @@
-import {
-  LinearProgress,
-  TableCell,
-  TableContainer,
-  Paper,
-  Table,
-  TableRow,
-  TableBody,
-  Typography,
-  Alert,
-} from "@mui/material";
-import { Color, ImagePropertiesAnnotation } from "queries";
+import { ImagePropertiesAnnotation, Color } from "queries";
 
-const ColorRow = ({
-  index,
-  color,
-  pixelFraction,
-}: {
+interface ColorRowProps {
   index: number;
   color: Color;
   pixelFraction: number;
-}) => {
+}
+
+const ColorRow: React.FC<ColorRowProps> = ({ index, color, pixelFraction }) => {
   const colorString = `${color.red},${color.green},${color.blue}`;
+  const brightness =
+    (color.red * 299 + color.green * 587 + color.blue * 114) / 1000;
+  const maxBrightness = 200; // set max brightness for border color
+  const borderColorString =
+    brightness > maxBrightness ? "#BBBBBB" : `rgba(${colorString}, 0.8)`;
 
   return (
-    <TableCell align="right">
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography variant="caption" style={{ alignSelf: "flex-start" }}>
+    <td className="text-right h-12 border p-4 border-neutral-300">
+      <div className="flex justify-between">
+        <span className="text-xs font-semibold">
           {`RGB = (${color.red}, ${color.green}, ${color.blue})`}
-        </Typography>
-        <Typography variant="caption" style={{ alignSelf: "flex-end" }}>
-          {index == 0 ? "Pixel fraction = " : null}
+        </span>
+        <span className="text-xs font-medium">
+          {index === 0 ? "Pixel fraction = " : null}
           {(pixelFraction * 100).toFixed(0)}%
-        </Typography>
+        </span>
       </div>
-      <LinearProgress
-        sx={{
-          backgroundColor: `rgb(${colorString}, 0.4)`,
-          "& .MuiLinearProgress-bar": {
+      <div
+        className={"w-full h-5 bg-opacity-40 bg-neutral-300"}
+        style={{ border: `1px solid ${borderColorString}` }} // Add a border
+      >
+        <div
+          className={"h-full"}
+          style={{
             backgroundColor: `rgb(${colorString})`,
-          },
-          height: "20px",
-        }}
-        variant="determinate"
-        value={pixelFraction * 100}
-      />
-    </TableCell>
+            width: `${pixelFraction * 100}%`,
+          }}
+        />
+      </div>
+    </td>
   );
 };
 
-export default ({ annotation }: { annotation: ImagePropertiesAnnotation }) => {
+interface ImagePropertiesTableProps {
+  annotation: ImagePropertiesAnnotation;
+}
+
+const ImagePropertiesTable: React.FC<ImagePropertiesTableProps> = ({
+  annotation,
+}) => {
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableBody>
+    <div>
+      <table className="w-full">
+        <tbody>
           {annotation.dominantColors.colors
             .sort((a, b) => b.pixelFraction - a.pixelFraction)
             .map(({ color, score, pixelFraction }, index) => (
-              <TableRow key={index}>
+              <tr key={index}>
                 <ColorRow
                   index={index}
                   color={color}
                   pixelFraction={pixelFraction}
                 />
-              </TableRow>
+              </tr>
             ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+        </tbody>
+      </table>
+    </div>
   );
 };
+
+export default ImagePropertiesTable;
