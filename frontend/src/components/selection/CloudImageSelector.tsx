@@ -35,7 +35,7 @@ const StickyHeadTable = ({
 
   return (
     <div className="flex flex-col w-full min-w-md">
-      <table className="table table-zebra table-hover">
+      <table className="table">
         <thead>
           <tr>
             <th key="imageId" className={clsx("px-4 py-2", "text-left")}>
@@ -47,13 +47,20 @@ const StickyHeadTable = ({
           {infoSlice.map((info, index) => (
             <tr
               key={index}
-              className={clsx(
-                "cursor-pointer",
-                selectedValue?.annotation === info.annotation && "bg-gray-200"
-              )}
+              className={clsx("cursor-pointer")}
               onClick={() => onInfoSelected(info)}
             >
-              <td className={clsx("px-4 py-4", "text-left")}>{info.imageId}</td>
+              <td
+                className={clsx(
+                  "px-4 py-4",
+                  "text-left",
+                  selectedValue?.annotation === info.annotation &&
+                    "bg-green-500",
+                  "hover:bg-green-100"
+                )}
+              >
+                {info.imageId}
+              </td>
             </tr>
           ))}
         </tbody>
