@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import clsx from "clsx";
 import { ImageSource } from "components/selection/UnifiedImageSelector";
 
 interface Props {
@@ -18,10 +17,7 @@ export default ({ onChange }: Props) => {
     Object.values(OPTION_TO_LABEL_MAP)[0]
   );
 
-  const handleSelection = (
-    event: React.MouseEvent<HTMLElement>,
-    newSelection: ImageSource
-  ) => {
+  const handleSelection = (newSelection: ImageSource) => {
     if (newSelection !== null) {
       setSelectedFeature(newSelection);
       onChange(newSelection);
@@ -29,17 +25,22 @@ export default ({ onChange }: Props) => {
   };
 
   return (
-    <ToggleButtonGroup
-      value={selectedOptions}
-      exclusive
-      onChange={handleSelection}
-      sx={{ height: 80, flexShrink: 0 }}
-    >
+    <div className="btn-group">
       {Object.entries(OPTION_TO_LABEL_MAP).map(([label, value]) => (
-        <ToggleButton key={label} value={value} aria-label={label}>
+        <button
+          key={label}
+          onClick={() => handleSelection(value)}
+          aria-label={label}
+          className={clsx(
+            "btn",
+            selectedOptions === value
+              ? "btn-primary border-primary-focus"
+              : "bg-gray-200 border-gray-400 text-gray-500 hover:border-primary hover:bg-primary hover:bg-opacity-25"
+          )}
+        >
           {label}
-        </ToggleButton>
+        </button>
       ))}
-    </ToggleButtonGroup>
+    </div>
   );
 };

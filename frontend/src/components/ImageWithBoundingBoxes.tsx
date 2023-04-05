@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaceAnnotation, LocalizedObjectAnnotation, Poly } from "queries";
-import { Box } from "@mui/material";
+import clsx from "clsx";
 
 const BoundingBox = ({
   index,
@@ -35,14 +35,16 @@ const BoundingBox = ({
   }
 
   return (
-    <Box
-      sx={{
-        position: "absolute",
+    <div
+      className={clsx(
+        "absolute border-solid border-green-500",
+        index === selectedIndex ? "border-4" : "border-2"
+      )}
+      style={{
         top: `${percentY * 100}%`,
         left: `${percentX * 100}%`,
         width: `${percentWidth * 100}%`,
         height: `${percentHeight * 100}%`,
-        border: `${index == selectedIndex ? "4px" : "2px"} solid green`,
       }}
     />
   );
@@ -102,23 +104,28 @@ const ImageWithBoundingBoxes = ({
       );
     });
   }
+  const aspectRatio = imageSize.width / imageSize.height;
+  const boxClasses = clsx(
+    "w-full",
+    "relative",
+    "bg-no-repeat",
+    "bg-contain",
+    "bg-center",
+    "object-cover"
+    // Add custom classes or other conditional classes here
+  );
 
   return (
-    <Box
-      sx={{
-        width: "100%",
-        aspectRatio: `${imageSize.width / imageSize.height}`,
+    <div
+      className={boxClasses}
+      style={{
         paddingTop: "0%",
-        position: "relative",
         backgroundImage: `url(${imageUrl})`,
-        backgroundSize: "contain",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center center",
-        objectFit: "cover",
+        aspectRatio: aspectRatio,
       }}
     >
       {boundingBoxElements}
-    </Box>
+    </div>
   );
 };
 
