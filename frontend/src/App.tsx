@@ -22,7 +22,7 @@ const ErrorAlert = ({ error }: { error: Error }) => (
   <Alert mode="error" text={error.message} />
 );
 
-const LoadingAlert = () => <Alert mode="loading" text="Uploading image" />;
+const LoadingAlert = () => <Alert mode="loading" text="Getting annotations" />;
 
 const ImageAnnotationPage = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
