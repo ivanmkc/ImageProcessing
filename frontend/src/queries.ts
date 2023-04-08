@@ -15,7 +15,6 @@
  */
 
 import axios from "axios";
-import sampleQuery from "mocks/sampleQueryResponse.json";
 
 const client = axios.create({ baseURL: import.meta.env.VITE_API_SERVER });
 
