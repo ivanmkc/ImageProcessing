@@ -24,7 +24,6 @@ interface Props {
 
 const OPTION_TO_LABEL_MAP = {
   "File upload": ImageSource.Upload,
-  "Image URL": ImageSource.URL,
   "Cloud storage": ImageSource.CloudStorage,
 };
 

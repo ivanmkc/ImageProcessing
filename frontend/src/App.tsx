@@ -29,7 +29,6 @@ import {
   ImageSource,
   UnifiedImageSelector,
 } from "components/selection/UnifiedImageSelector";
-import FeatureToggleSelection from "components/selection/FeatureToggleSelection";
 import ImageSourceToggleSelection from "components/selection/ImageSourceToggleSelection";
 import clsx from "clsx";
 import Alert from "components/Alert";
@@ -44,7 +43,6 @@ const ImageAnnotationPage = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   // The URL to the image to be displayed
   const [selectedFileUrl, setSelectedFileURL] = useState<string>("");
-  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
   const [imageSource, setImageSource] = useState<ImageSource>(
     ImageSource.Upload
   );
@@ -54,7 +52,7 @@ const ImageAnnotationPage = () => {
     Error,
     File
   >((file: File) => {
-    return annotateImageByFile(file, selectedFeatures);
+    return annotateImageByFile(file);
   });
 
   const annotateImageByUriMutation = useMutation<
@@ -62,7 +60,7 @@ const ImageAnnotationPage = () => {
     Error,
     string
   >((imageUri: string) => {
-    return annotateImageByUri(imageUri, selectedFeatures);
+    return annotateImageByUri(imageUri);
   });
 
   const annotateImageByCloudImageMutation = useMutation<
@@ -128,21 +126,6 @@ const ImageAnnotationPage = () => {
     }
   };
 
-  // Redo annotation when features list changes
-  useEffect(() => {
-    console.log("selectedFeatures changed");
-    switch (imageSource) {
-      case ImageSource.Upload:
-        handleFileChange(selectedFile);
-        break;
-      case ImageSource.URL:
-        handleAnnotateByUri(selectedFileUrl);
-        break;
-      case ImageSource.CloudStorage:
-        break;
-    }
-  }, [selectedFeatures]);
-
   // Clear results and file URL
   useEffect(() => {
     console.log("imageSource changed");
@@ -190,30 +173,11 @@ const ImageAnnotationPage = () => {
     );
   };
 
-  const renderImageFeatureSelection = () => {
-    return (
-      <div className={clsx("border-l-4 pl-4 border-blueGray-200", "space-y-2")}>
-        <h6 className="text-lg">Features</h6>
-        <p className="text-base">
-          Choose the image features you want to detect
-        </p>
-        <FeatureToggleSelection
-          onChange={(features) => {
-            setSelectedFeatures(features);
-          }}
-        />
-      </div>
-    );
-  };
-
-  const showImageFeatureSelection = imageSource != ImageSource.CloudStorage;
-
   return (
     <div className="container mx-auto max-w-6xl px-4 bg-gray-50 py-4">
       <span className="text-2xl mb-2">Annotate Image</span>
       <div className="space-y-8">
         {renderImageSourceSelection()}
-        {showImageFeatureSelection ? renderImageFeatureSelection() : null}
         {error || isLoading || annotationResult ? (
           <>
             <div

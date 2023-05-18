@@ -41,11 +41,9 @@ export interface ImageAnnotationResult {
 
 export async function annotateImageByFile(
   file: File,
-  features: string[]
 ): Promise<ImageAnnotationResult> {
   const formData = new FormData();
   formData.append("image", file);
-  formData.append("features", features.join(","));
   return client
     .post<ImageAnnotationResult>("/annotate", formData)
     .then((response) => response.data);
@@ -53,14 +51,8 @@ export async function annotateImageByFile(
 
 export async function annotateImageByUri(
   imageUri: string,
-  features: string[]
 ): Promise<ImageAnnotationResult> {
-  const formData = new FormData();
-  formData.append("image_uri", imageUri);
-  formData.append("features", features.join(","));
-  return client
-    .post<ImageAnnotationResult>("/annotate", formData)
-    .then((response) => response.data);
+  throw Error("Not supported");
 }
 
 export async function annotateImageByCloudImageInfo(
