@@ -15,18 +15,16 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { FaceAnnotation, LocalizedObjectAnnotation, Poly } from "queries";
+import { LocalizedObjectAnnotation } from "queries";
 import clsx from "clsx";
 
 const BoundingBox = ({
   index,
-  box,
+  normalizedVertices,
   selectedIndex,
-  imageWidth,
-  imageHeight,
 }: {
   index: number;
-  box: Poly;
+  normalizedVertices: number[];
   imageWidth: number;
   imageHeight: number;
   selectedIndex?: number;
@@ -36,16 +34,11 @@ const BoundingBox = ({
   let percentWidth: number;
   let percentHeight: number;
 
-  if (box.vertices.length == 4) {
-    percentX = box.vertices[0].x / imageWidth;
-    percentY = box.vertices[0].y / imageHeight;
-    percentWidth = (box.vertices[2].x - box.vertices[0].x) / imageWidth;
-    percentHeight = (box.vertices[2].y - box.vertices[0].y) / imageHeight;
-  } else if (box.normalizedVertices.length == 4) {
-    percentX = box.normalizedVertices[0].x;
-    percentY = box.normalizedVertices[0].y;
-    percentWidth = box.normalizedVertices[2].x - box.normalizedVertices[0].x;
-    percentHeight = box.normalizedVertices[2].y - box.normalizedVertices[0].y;
+  if (normalizedVertices.length == 4) {
+    percentY = normalizedVertices[0];
+    percentX = normalizedVertices[1];
+    percentWidth = normalizedVertices[3] - percentX;
+    percentHeight = normalizedVertices[2] - percentY;
   } else {
     return null;
   }
@@ -69,12 +62,10 @@ const BoundingBox = ({
 const ImageWithBoundingBoxes = ({
   imageUrl,
   objectAnnotations,
-  faceAnnotations,
   selectedIndex,
 }: {
   imageUrl: string;
   objectAnnotations?: LocalizedObjectAnnotation[];
-  faceAnnotations?: FaceAnnotation[];
   selectedIndex?: number;
 }) => {
   const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
@@ -91,28 +82,13 @@ const ImageWithBoundingBoxes = ({
 
   if (objectAnnotations != null) {
     boundingBoxElements = objectAnnotations.map((annotation, index) => {
-      const box = annotation.boundingPoly;
+      const box = annotation.box;
 
       return (
         <BoundingBox
           key={index}
           index={index}
-          box={box}
-          selectedIndex={selectedIndex}
-          imageWidth={imageSize.width}
-          imageHeight={imageSize.height}
-        />
-      );
-    });
-  } else if (faceAnnotations != null) {
-    boundingBoxElements = faceAnnotations.map((annotation, index) => {
-      const box = annotation.fdBoundingPoly;
-
-      return (
-        <BoundingBox
-          key={index}
-          index={index}
-          box={box}
+          normalizedVertices={box}
           selectedIndex={selectedIndex}
           imageWidth={imageSize.width}
           imageHeight={imageSize.height}

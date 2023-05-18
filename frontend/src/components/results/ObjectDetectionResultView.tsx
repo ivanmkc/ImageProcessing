@@ -40,7 +40,7 @@ const ResultsTable = ({
   const renderObjectDetections = () => {
     // Get highest confidence label and percentage
     const highestConfidence = objectDetections[0];
-    const label = highestConfidence.name;
+    const label = highestConfidence.class;
     const confidencePercentage = (highestConfidence.score * 100).toFixed(0);
 
     return (
@@ -53,7 +53,7 @@ const ResultsTable = ({
         )}
         <table className="min-w-full divide-y divide-gray-200">
           <tbody className="bg-white divide-y divide-gray-200">
-            {objectDetections.map(({ name, score }, index) => (
+            {objectDetections.map(({ class: name, score }, index) => (
               <tr
                 key={index}
                 onMouseEnter={() => {
@@ -83,10 +83,10 @@ const ResultsTable = ({
   return (
     <div className="flex flex-col gap-4">
       <span className="text-md font-medium">
-        The Vision API can detect and extract multiple objects in an image with
-        Object Localization. Each result identifies information about the
-        object, the position of the object, and rectangular bounds for the
-        region of the image that contains the object.
+        This model can detect and extract multiple objects in an image. Each
+        result identifies information about the object, the position of the
+        object, and rectangular bounds for the region of the image that contains
+        the object.
       </span>
       {annotations.length === 0 ? (
         <div
