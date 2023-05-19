@@ -35,10 +35,10 @@ const BoundingBox = ({
   let percentHeight: number;
 
   if (normalizedVertices.length == 4) {
-    percentY = normalizedVertices[0];
-    percentX = normalizedVertices[1];
-    percentWidth = normalizedVertices[3] - percentX;
-    percentHeight = normalizedVertices[2] - percentY;
+    percentX = normalizedVertices[0];
+    percentY = normalizedVertices[1];
+    percentWidth = normalizedVertices[2] - percentX;
+    percentHeight = normalizedVertices[3] - percentY;
   } else {
     return null;
   }

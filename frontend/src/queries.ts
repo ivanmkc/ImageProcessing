@@ -16,7 +16,7 @@
 
 import axios from "axios";
 
-const client = axios.create({ baseURL: import.meta.env.VITE_API_SERVER });
+const client = axios.create({ baseURL: 'api' });
 
 
 export interface Annotation {
@@ -99,5 +99,5 @@ export async function getImageInfo(
 }
 
 export function getImageDataURL(info: CloudImageInfo): string {
-  return `${import.meta.env.VITE_API_SERVER}/bucket/imagedata/${info.imageId}`;
+  return `api/bucket/imagedata/${info.imageId}`;
 }
